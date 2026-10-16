@@ -1,0 +1,70 @@
+{
+  "description": "Sensitive locations for CivicLens priority calculation. Complaints within the radius of these locations receive higher location-importance scores.",
+  "default_radius_meters": 200,
+  "locations": [
+    {
+      "id": 1,
+      "name": "City General Hospital",
+      "type": "Hospital",
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "radius_meters": 200
+    },
+    {
+      "id": 2,
+      "name": "Central Public School",
+      "type": "School",
+      "latitude": 28.6329,
+      "longitude": 77.2195,
+      "radius_meters": 200
+    },
+    {
+      "id": 3,
+      "name": "Main Bus Terminal",
+      "type": "Bus Stop",
+      "latitude": 28.6440,
+      "longitude": 77.2167,
+      "radius_meters": 200
+    },
+    {
+      "id": 4,
+      "name": "Central Market",
+      "type": "Market",
+      "latitude": 28.6508,
+      "longitude": 77.2289,
+      "radius_meters": 200
+    },
+    {
+      "id": 5,
+      "name": "Municipal Corporation HQ",
+      "type": "Government Office",
+      "latitude": 28.6353,
+      "longitude": 77.2250,
+      "radius_meters": 200
+    },
+    {
+      "id": 6,
+      "name": "City Railway Station",
+      "type": "Railway Station",
+      "latitude": 28.6425,
+      "longitude": 77.2210,
+      "radius_meters": 200
+    },
+    {
+      "id": 7,
+      "name": "Community Temple",
+      "type": "Religious Place",
+      "latitude": 28.6280,
+      "longitude": 77.2155,
+      "radius_meters": 200
+    },
+    {
+      "id": 8,
+      "name": "Children's Park",
+      "type": "Park/Playground",
+      "latitude": 28.6180,
+      "longitude": 77.2310,
+      "radius_meters": 200
+    }
+  ]
+}
