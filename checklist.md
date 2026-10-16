@@ -13,17 +13,17 @@ Before any code is written, resolve the open decisions listed in Section 9 of th
 
 ### Subtasks
 
-- [ ] **0.1 — Resolve open decisions**
-  - [ ] 0.1.1 — Decide normalization rules for each priority factor (caps / ranges for severity, similar-complaint count, location importance, time-since-reporting).
-  - [ ] 0.1.2 — Define the location-importance list (sensitive places + their coordinates; e.g., hospitals, schools, bus stops).
-  - [ ] 0.1.3 — Define the conflict-resolution rule when image-predicted category ≠ text-predicted category (e.g., prefer higher-confidence, prefer text, or flag for review).
-  - [ ] 0.1.4 — Confirm dataset availability for all 4 categories (Potholes, Garbage, Waterlogging, Streetlight Faults). Define a fallback plan for any category with insufficient data.
-  - [ ] 0.1.5 — Finalize frontend framework choice: React vs. lightweight alternative.
-  - [ ] 0.1.6 — Finalize deep-learning framework choice: TensorFlow/Keras vs. PyTorch.
+- [x] **0.1 — Resolve open decisions**
+  - [x] 0.1.1 — Decide normalization rules for each priority factor (caps / ranges for severity, similar-complaint count, location importance, time-since-reporting).
+  - [x] 0.1.2 — Define the location-importance list (sensitive places + their coordinates; e.g., hospitals, schools, bus stops).
+  - [x] 0.1.3 — Define the conflict-resolution rule when image-predicted category ≠ text-predicted category (e.g., prefer higher-confidence, prefer text, or flag for review).
+  - [x] 0.1.4 — Confirm dataset availability for all 4 categories (Potholes, Garbage, Waterlogging, Streetlight Faults). Define a fallback plan for any category with insufficient data.
+  - [x] 0.1.5 — Finalize frontend framework choice: React vs. lightweight alternative.
+  - [x] 0.1.6 — Finalize deep-learning framework choice: TensorFlow/Keras vs. PyTorch.
 
-- [ ] **0.2 — Repository & environment setup**
-  - [ ] 0.2.1 — Initialize Git repository with `.gitignore` (Python, Node, data files, model weights).
-  - [ ] 0.2.2 — Create project folder structure:
+- [x] **0.2 — Repository & environment setup**
+  - [x] 0.2.1 — Initialize Git repository with `.gitignore` (Python, Node, data files, model weights).
+  - [x] 0.2.2 — Create project folder structure:
     ```
     civicLens/
     ├── backend/          # FastAPI app
@@ -37,18 +37,18 @@ Before any code is written, resolve the open decisions listed in Section 9 of th
     ├── scripts/          # one-off utilities
     └── docs/             # documentation
     ```
-  - [ ] 0.2.3 — Set up Python virtual environment & `requirements.txt` (FastAPI, uvicorn, SQLAlchemy, scikit-learn, TF/PyTorch, OpenCV, pandas, numpy).
-  - [ ] 0.2.4 — Set up frontend project (e.g., `npx create-react-app` or Vite).
-  - [ ] 0.2.5 — Verify both backend dev server (`uvicorn`) and frontend dev server start without errors.
+  - [x] 0.2.3 — Set up Python virtual environment & `requirements.txt` (FastAPI, uvicorn, SQLAlchemy, scikit-learn, TF/PyTorch, OpenCV, pandas, numpy).
+  - [x] 0.2.4 — Set up frontend project (e.g., `npx create-react-app` or Vite).
+  - [x] 0.2.5 — Verify both backend dev server (`uvicorn`) and frontend dev server start without errors.
 
 ### Phase 0 — Verification Tests
 
-- [ ] T0.1 — All 6 open decisions in Section 9 have documented answers in a `docs/decisions.md` file. **Pass:** Each decision has a clear choice + short rationale.
-- [ ] T0.2 — `git log` shows initial commit. **Pass:** Repo initialized.
-- [ ] T0.3 — `pip install -r requirements.txt` succeeds in the virtual environment. **Pass:** No install errors.
-- [ ] T0.4 — Backend: `uvicorn backend.main:app --reload` starts and responds at `http://localhost:8000/docs`. **Pass:** 200 OK on Swagger UI.
-- [ ] T0.5 — Frontend: dev server starts and shows the default page. **Pass:** Page renders in browser.
-- [ ] T0.6 — Folder structure matches the agreed layout. **Pass:** `tree` output matches spec.
+- [x] T0.1 — All 6 open decisions in Section 9 have documented answers in a `docs/decisions.md` file. **Pass:** Each decision has a clear choice + short rationale.
+- [x] T0.2 — `git log` shows initial commit. **Pass:** Repo initialized.
+- [x] T0.3 — `pip install -r requirements.txt` succeeds in the virtual environment. **Pass:** No install errors.
+- [x] T0.4 — Backend: `uvicorn backend.main:app --reload` starts and responds at `http://localhost:8000/docs`. **Pass:** 200 OK on Swagger UI.
+- [x] T0.5 — Frontend: dev server starts and shows the default page. **Pass:** Page renders in browser.
+- [x] T0.6 — Folder structure matches the agreed layout. **Pass:** `tree` output matches spec.
 
 ---
 
