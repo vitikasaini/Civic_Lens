@@ -184,38 +184,38 @@ Combine image + text predictions into a final category, then compute severity.
 
 ### Subtasks
 
-- [ ] **4.1 — Category resolution**
-  - [ ] 4.1.1 — Create `backend/ml/category_resolver.py` with function: `resolve(image_prediction, text_prediction) → final_category`.
-  - [ ] 4.1.2 — Implement the conflict-resolution rule decided in Phase 0 (subtask 0.1.3).
-  - [ ] 4.1.3 — Log the resolution decision (agreed / disagreed, which source won, confidences).
+- [x] **4.1 — Category resolution**
+  - [x] 4.1.1 — Create `backend/ml/category_resolver.py` with function: `resolve(image_prediction, text_prediction) → final_category`.
+  - [x] 4.1.2 — Implement the conflict-resolution rule decided in Phase 0 (subtask 0.1.3).
+  - [x] 4.1.3 — Log the resolution decision (agreed / disagreed, which source won, confidences).
 
-- [ ] **4.2 — Severity assessment**
-  - [ ] 4.2.1 — Create `backend/ml/severity.py`.
-  - [ ] 4.2.2 — Implement text-cue scoring: category-specific keyword/phrase lookup per the table in plan.md Section 3.4. High cue → +2, Medium cue → +1, No cue → 0.
-  - [ ] 4.2.3 — Implement citizen-severity mapping: Minor → 0, Moderate → +1, Severe → +2.
-  - [ ] 4.2.4 — Implement image-based cue (Pothole & Garbage only): OpenCV proportion-of-affected-area heuristic. Large area → +1, otherwise → 0. Documented as coarse heuristic.
-  - [ ] 4.2.5 — Combine: `severity_points = text_cue + citizen_score + image_cue`. Map: 0–1 → Low, 2–3 → Medium, 4+ → High.
-  - [ ] 4.2.6 — Return detailed breakdown: `{severity: "High", points: 5, text_cue: 2, citizen: 2, image_cue: 1}`.
+- [x] **4.2 — Severity assessment**
+  - [x] 4.2.1 — Create `backend/ml/severity.py`.
+  - [x] 4.2.2 — Implement text-cue scoring: category-specific keyword/phrase lookup per the table in plan.md Section 3.4. High cue → +2, Medium cue → +1, No cue → 0.
+  - [x] 4.2.3 — Implement citizen-severity mapping: Minor → 0, Moderate → +1, Severe → +2.
+  - [x] 4.2.4 — Implement image-based cue (Pothole & Garbage only): OpenCV proportion-of-affected-area heuristic. Large area → +1, otherwise → 0. Documented as coarse heuristic.
+  - [x] 4.2.5 — Combine: `severity_points = text_cue + citizen_score + image_cue`. Map: 0–1 → Low, 2–3 → Medium, 4+ → High.
+  - [x] 4.2.6 — Return detailed breakdown: `{severity: "High", points: 5, text_cue: 2, citizen: 2, image_cue: 1}`.
 
-- [ ] **4.3 — Integrate into complaint processing pipeline**
-  - [ ] 4.3.1 — After `POST /api/complaints`, trigger: image classification → text classification → category resolution → severity assessment. Update DB record with results.
-  - [ ] 4.3.2 — Ensure the pipeline runs synchronously within the request (for V1.0 simplicity) or as a clear background task if latency is too high.
+- [x] **4.3 — Integrate into complaint processing pipeline**
+  - [x] 4.3.1 — After `POST /api/complaints`, trigger: image classification → text classification → category resolution → severity assessment. Update DB record with results.
+  - [x] 4.3.2 — Ensure the pipeline runs synchronously within the request (for V1.0 simplicity) or as a clear background task if latency is too high.
 
 ### Phase 4 — Verification Tests
 
-- [ ] T4.1 — `resolve(("Pothole", 0.9), ("Pothole", 0.8))` → "Potholes / Damaged Roads". **Pass:** Agreement case works.
-- [ ] T4.2 — `resolve(("Garbage", 0.7), ("Pothole", 0.85))` → result follows the decided conflict rule. **Pass:** Documented rule applied.
-- [ ] T4.3 — Resolution logs show source confidences and decision reason. **Pass:** Log output verified.
-- [ ] T4.4 — Text cue: description with "deep pothole, accident" + category Pothole → text_cue = 2 (both are high-severity cues). **Pass:** Score matches rule.
-- [ ] T4.5 — Text cue: description with no severity keywords → text_cue = 0. **Pass:** Zero score.
-- [ ] T4.6 — Citizen severity: Minor → 0, Moderate → 1, Severe → 2. **Pass:** All three mappings correct.
-- [ ] T4.7 — Image cue on Pothole image with large affected area → image_cue = 1. **Pass:** Heuristic triggers.
-- [ ] T4.8 — Image cue on Waterlogging image → image_cue = 0 (not applicable). **Pass:** Category restriction works.
-- [ ] T4.9 — Combined: text_cue=2 + citizen=2 + image_cue=1 = 5 → "High". **Pass:** Correct severity.
-- [ ] T4.10 — Combined: text_cue=0 + citizen=0 + image_cue=0 = 0 → "Low". **Pass:** Correct severity.
-- [ ] T4.11 — Combined: text_cue=1 + citizen=1 + image_cue=0 = 2 → "Medium". **Pass:** Correct severity.
-- [ ] T4.12 — Submit a complaint via API → DB record has category, severity, severity_points filled. **Pass:** End-to-end pipeline.
-- [ ] T4.13 — Severity breakdown JSON is stored in DB and returned by `GET /api/complaints/{id}`. **Pass:** Detailed factors accessible.
+- [x] T4.1 — `resolve(("Pothole", 0.9), ("Pothole", 0.8))` → "Potholes / Damaged Roads". **Pass:** Agreement case works.
+- [x] T4.2 — `resolve(("Garbage", 0.7), ("Pothole", 0.85))` → result follows the decided conflict rule. **Pass:** Documented rule applied.
+- [x] T4.3 — Resolution logs show source confidences and decision reason. **Pass:** Log output verified.
+- [x] T4.4 — Text cue: description with "deep pothole, accident" + category Pothole → text_cue = 2 (both are high-severity cues). **Pass:** Score matches rule.
+- [x] T4.5 — Text cue: description with no severity keywords → text_cue = 0. **Pass:** Zero score.
+- [x] T4.6 — Citizen severity: Minor → 0, Moderate → 1, Severe → 2. **Pass:** All three mappings correct.
+- [x] T4.7 — Image cue on Pothole image with large affected area → image_cue = 1. **Pass:** Heuristic triggers.
+- [x] T4.8 — Image cue on Waterlogging image → image_cue = 0 (not applicable). **Pass:** Category restriction works.
+- [x] T4.9 — Combined: text_cue=2 + citizen=2 + image_cue=1 = 5 → "High". **Pass:** Correct severity.
+- [x] T4.10 — Combined: text_cue=0 + citizen=0 + image_cue=0 = 0 → "Low". **Pass:** Correct severity.
+- [x] T4.11 — Combined: text_cue=1 + citizen=1 + image_cue=0 = 2 → "Medium". **Pass:** Correct severity.
+- [x] T4.12 — Submit a complaint via API → DB record has category, severity, severity_points filled. **Pass:** End-to-end pipeline.
+- [x] T4.13 — Severity breakdown JSON is stored in DB and returned by `GET /api/complaints/{id}`. **Pass:** Detailed factors accessible.
 
 ---
 

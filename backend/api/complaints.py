@@ -128,7 +128,36 @@ async def create_complaint(
     # Store relative path for portability across environments
     relative_image_path = f"uploads/{unique_filename}"
 
-    # 4. Save complaint record in SQLite DB
+    # 4. AI/ML Processing Pipeline: Image -> Text -> Resolution -> Severity
+    # 4a. Image classification
+    try:
+        from backend.ml.image_classifier import predict as predict_image
+        img_prediction = predict_image(str(target_filepath))
+    except Exception as exc:
+        img_prediction = ("Unknown", 0.0)
+
+    # 4b. Text classification
+    try:
+        from backend.ml.text_classifier import predict as predict_text
+        txt_prediction = predict_text(clean_desc)
+    except Exception as exc:
+        txt_prediction = ("Unknown", 0.0)
+
+    # 4c. Multimodal category resolution
+    from backend.ml.category_resolver import resolve_detailed
+    resolution = resolve_detailed(img_prediction, txt_prediction)
+    resolved_category = resolution["final_category"]
+
+    # 4d. Rule-based severity assessment
+    from backend.ml.severity import assess_severity
+    severity_breakdown = assess_severity(
+        description=clean_desc,
+        category=resolved_category,
+        citizen_severity=clean_severity,
+        image_path=str(target_filepath),
+    )
+
+    # 5. Save complaint record in SQLite DB
     now = get_utc_now()
     new_complaint = Complaint(
         description=clean_desc,
@@ -136,6 +165,13 @@ async def create_complaint(
         latitude=latitude,
         longitude=longitude,
         citizen_severity=clean_severity,
+        category=resolved_category,
+        severity=severity_breakdown["severity"],
+        severity_points=severity_breakdown["points"],
+        priority_factors={
+            "severity_breakdown": severity_breakdown,
+            "resolution_data": resolution,
+        },
         status="Reported",
         similar_count=0,
         created_at=now,
@@ -144,7 +180,7 @@ async def create_complaint(
     db.add(new_complaint)
     db.flush()  # populate new_complaint.id
 
-    # 5. Record initial status in status_history
+    # 6. Record initial status in status_history
     initial_history = StatusHistory(
         complaint_id=new_complaint.id,
         old_status=None,
