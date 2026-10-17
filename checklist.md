@@ -58,33 +58,33 @@ Build the SQLite database schema and the CRUD API for complaints. No ML yet — 
 
 ### Subtasks
 
-- [ ] **1.1 — Database schema**
-  - [ ] 1.1.1 — Define `complaints` table: `id` (PK, auto), `description` (TEXT), `image_path` (TEXT), `latitude` (REAL), `longitude` (REAL), `category` (TEXT, nullable — set by ML later), `citizen_severity` (TEXT — Minor/Moderate/Severe), `severity` (TEXT, nullable — computed later), `severity_points` (INT, nullable), `priority_score` (REAL, nullable), `priority_factors` (JSON/TEXT, nullable), `group_id` (INT, nullable), `similar_count` (INT, default 0), `status` (TEXT, default "Reported"), `created_at` (DATETIME), `updated_at` (DATETIME).
-  - [ ] 1.1.2 — Define `status_history` table: `id` (PK), `complaint_id` (FK), `old_status` (TEXT), `new_status` (TEXT), `changed_at` (DATETIME).
-  - [ ] 1.1.3 — Create SQLAlchemy models for both tables.
-  - [ ] 1.1.4 — Write a DB initialization script that creates tables if they don't exist.
+- [x] **1.1 — Database schema**
+  - [x] 1.1.1 — Define `complaints` table: `id` (PK, auto), `description` (TEXT), `image_path` (TEXT), `latitude` (REAL), `longitude` (REAL), `category` (TEXT, nullable — set by ML later), `citizen_severity` (TEXT — Minor/Moderate/Severe), `severity` (TEXT, nullable — computed later), `severity_points` (INT, nullable), `priority_score` (REAL, nullable), `priority_factors` (JSON/TEXT, nullable), `group_id` (INT, nullable), `similar_count` (INT, default 0), `status` (TEXT, default "Reported"), `created_at` (DATETIME), `updated_at` (DATETIME).
+  - [x] 1.1.2 — Define `status_history` table: `id` (PK), `complaint_id` (FK), `old_status` (TEXT), `new_status` (TEXT), `changed_at` (DATETIME).
+  - [x] 1.1.3 — Create SQLAlchemy models for both tables.
+  - [x] 1.1.4 — Write a DB initialization script that creates tables if they don't exist.
 
-- [ ] **1.2 — Complaint submission API**
-  - [ ] 1.2.1 — `POST /api/complaints` — accepts multipart form: image file, description text, latitude, longitude, citizen_severity. Validates all required fields. Saves image to disk, stores record in DB. Returns complaint ID + status.
-  - [ ] 1.2.2 — `GET /api/complaints` — returns list of complaints with filtering (category, severity, status, priority) and sorting (by priority descending, by date).
-  - [ ] 1.2.3 — `GET /api/complaints/{id}` — returns full complaint detail including priority factors and status history.
-  - [ ] 1.2.4 — `PATCH /api/complaints/{id}/status` — updates status (Reported → In Progress → Resolved). Appends to `status_history`. Rejects invalid transitions.
+- [x] **1.2 — Complaint submission API**
+  - [x] 1.2.1 — `POST /api/complaints` — accepts multipart form: image file, description text, latitude, longitude, citizen_severity. Validates all required fields. Saves image to disk, stores record in DB. Returns complaint ID + status.
+  - [x] 1.2.2 — `GET /api/complaints` — returns list of complaints with filtering (category, severity, status, priority) and sorting (by priority descending, by date).
+  - [x] 1.2.3 — `GET /api/complaints/{id}` — returns full complaint detail including priority factors and status history.
+  - [x] 1.2.4 — `PATCH /api/complaints/{id}/status` — updates status (Reported → In Progress → Resolved). Appends to `status_history`. Rejects invalid transitions.
 
-- [ ] **1.3 — Dashboard summary API**
-  - [ ] 1.3.1 — `GET /api/dashboard/summary` — returns counts: total, high-priority, pending (Reported), in-progress, resolved.
+- [x] **1.3 — Dashboard summary API**
+  - [x] 1.3.1 — `GET /api/dashboard/summary` — returns counts: total, high-priority, pending (Reported), in-progress, resolved.
 
 ### Phase 1 — Verification Tests
 
-- [ ] T1.1 — Run DB init script twice — second run doesn't error or duplicate tables. **Pass:** Idempotent schema creation.
-- [ ] T1.2 — `POST /api/complaints` with valid payload → 201, record exists in DB. **Pass:** Complaint ID returned, DB row matches input.
-- [ ] T1.3 — `POST /api/complaints` with missing required field → 422. **Pass:** Validation error with clear message.
-- [ ] T1.4 — `POST /api/complaints` — uploaded image is saved to disk at the returned path. **Pass:** File exists, is a valid image.
-- [ ] T1.5 — `GET /api/complaints` returns correct list; filtering by `status=Reported` returns only matching. **Pass:** JSON array, correct count.
-- [ ] T1.6 — `GET /api/complaints/{id}` returns correct complaint with all fields. **Pass:** Fields match what was submitted.
-- [ ] T1.7 — `PATCH /api/complaints/{id}/status` from Reported → In Progress → Resolved succeeds. **Pass:** Status updated, status_history rows created.
-- [ ] T1.8 — `PATCH /api/complaints/{id}/status` with invalid transition (e.g., Reported → Resolved) → 400. **Pass:** Error message explains valid transitions.
-- [ ] T1.9 — `GET /api/dashboard/summary` after inserting 5 test complaints (mixed statuses) returns correct counts. **Pass:** All counts match manual count.
-- [ ] T1.10 — SQLite DB file is portable — copy and open in a SQLite viewer shows correct data. **Pass:** Schema and data visible.
+- [x] T1.1 — Run DB init script twice — second run doesn't error or duplicate tables. **Pass:** Idempotent schema creation.
+- [x] T1.2 — `POST /api/complaints` with valid payload → 201, record exists in DB. **Pass:** Complaint ID returned, DB row matches input.
+- [x] T1.3 — `POST /api/complaints` with missing required field → 422. **Pass:** Validation error with clear message.
+- [x] T1.4 — `POST /api/complaints` — uploaded image is saved to disk at the returned path. **Pass:** File exists, is a valid image.
+- [x] T1.5 — `GET /api/complaints` returns correct list; filtering by `status=Reported` returns only matching. **Pass:** JSON array, correct count.
+- [x] T1.6 — `GET /api/complaints/{id}` returns correct complaint with all fields. **Pass:** Fields match what was submitted.
+- [x] T1.7 — `PATCH /api/complaints/{id}/status` from Reported → In Progress → Resolved succeeds. **Pass:** Status updated, status_history rows created.
+- [x] T1.8 — `PATCH /api/complaints/{id}/status` with invalid transition (e.g., Reported → Resolved) → 400. **Pass:** Error message explains valid transitions.
+- [x] T1.9 — `GET /api/dashboard/summary` after inserting 5 test complaints (mixed statuses) returns correct counts. **Pass:** All counts match manual count.
+- [x] T1.10 — SQLite DB file is portable — copy and open in a SQLite viewer shows correct data. **Pass:** Schema and data visible.
 
 ---
 
