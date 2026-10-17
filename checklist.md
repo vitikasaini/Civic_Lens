@@ -142,39 +142,39 @@ Train the text classifier using TF-IDF + Logistic Regression (and optionally Ran
 
 ### Subtasks
 
-- [ ] **3.1 — Dataset preparation**
-  - [ ] 3.1.1 — Collect or create text samples for each of the 4 categories. Document source and size.
-  - [ ] 3.1.2 — If generating synthetic data, document the method clearly and note it as synthetic.
-  - [ ] 3.1.3 — Clean text: lowercasing, punctuation removal, stopword removal (keep domain-relevant words).
-  - [ ] 3.1.4 — Split into train / test sets (e.g., 80/20).
+- [x] **3.1 — Dataset preparation**
+  - [x] 3.1.1 — Collect or create text samples for each of the 4 categories. Document source and size.
+  - [x] 3.1.2 — If generating synthetic data, document the method clearly and note it as synthetic.
+  - [x] 3.1.3 — Clean text: lowercasing, punctuation removal, stopword removal (keep domain-relevant words).
+  - [x] 3.1.4 — Split into train / test sets (e.g., 80/20).
 
-- [ ] **3.2 — Feature extraction & training**
-  - [ ] 3.2.1 — Fit TF-IDF vectorizer on training text. Save the fitted vectorizer.
-  - [ ] 3.2.2 — Train Logistic Regression classifier. Save model.
-  - [ ] 3.2.3 — (Optional) Train Random Forest classifier for comparison. Save model.
-  - [ ] 3.2.4 — Save models + vectorizer to `backend/ml/models/`.
+- [x] **3.2 — Feature extraction & training**
+  - [x] 3.2.1 — Fit TF-IDF vectorizer on training text. Save the fitted vectorizer.
+  - [x] 3.2.2 — Train Logistic Regression classifier. Save model.
+  - [x] 3.2.3 — (Optional) Train Random Forest classifier for comparison. Save model.
+  - [x] 3.2.4 — Save models + vectorizer to `backend/ml/models/`.
 
-- [ ] **3.3 — Model evaluation**
-  - [ ] 3.3.1 — Evaluate on test set: accuracy, precision, recall, F1-score per class.
-  - [ ] 3.3.2 — Generate confusion matrix.
-  - [ ] 3.3.3 — If Random Forest was trained, compare side-by-side and pick the better model.
-  - [ ] 3.3.4 — Update `docs/evaluation.md` with text model results.
+- [x] **3.3 — Model evaluation**
+  - [x] 3.3.1 — Evaluate on test set: accuracy, precision, recall, F1-score per class.
+  - [x] 3.3.2 — Generate confusion matrix.
+  - [x] 3.3.3 — If Random Forest was trained, compare side-by-side and pick the better model.
+  - [x] 3.3.4 — Update `docs/evaluation.md` with text model results.
 
-- [ ] **3.4 — Inference module**
-  - [ ] 3.4.1 — Create `backend/ml/text_classifier.py` with a `predict(text) → (category, confidence)` function.
-  - [ ] 3.4.2 — Module loads TF-IDF vectorizer + model once on startup.
-  - [ ] 3.4.3 — Handle edge cases: empty string, very short text, non-English text.
+- [x] **3.4 — Inference module**
+  - [x] 3.4.1 — Create `backend/ml/text_classifier.py` with a `predict(text) → (category, confidence)` function.
+  - [x] 3.4.2 — Module loads TF-IDF vectorizer + model once on startup.
+  - [x] 3.4.3 — Handle edge cases: empty string, very short text, non-English text.
 
 ### Phase 3 — Verification Tests
 
-- [ ] T3.1 — Text dataset has samples for all 4 categories. **Pass:** Count per category ≥ documented minimum.
-- [ ] T3.2 — TF-IDF + Logistic Regression training completes without errors. **Pass:** Model file saved.
-- [ ] T3.3 — Test-set metrics (accuracy, F1) computed and documented — no invented numbers. **Pass:** `docs/evaluation.md` updated.
-- [ ] T3.4 — `predict("There is a huge pothole on the main road")` returns Potholes category. **Pass:** Correct category.
-- [ ] T3.5 — `predict("Garbage piled up for days, bad smell")` returns Garbage category. **Pass:** Correct category.
-- [ ] T3.6 — `predict("")` or `predict("   ")` returns a handled result or error, not a crash. **Pass:** Graceful handling.
-- [ ] T3.7 — If Random Forest was trained, comparison table exists in `docs/evaluation.md`. **Pass:** Side-by-side metrics.
-- [ ] T3.8 — Inference latency per prediction < 100ms on local machine. **Pass:** Timed measurement.
+- [x] T3.1 — Text dataset has samples for all 4 categories. **Pass:** Count per category ≥ documented minimum.
+- [x] T3.2 — TF-IDF + Logistic Regression training completes without errors. **Pass:** Model file saved.
+- [x] T3.3 — Test-set metrics (accuracy, F1) computed and documented — no invented numbers. **Pass:** `docs/evaluation.md` updated.
+- [x] T3.4 — `predict("There is a huge pothole on the main road")` returns Potholes category. **Pass:** Correct category.
+- [x] T3.5 — `predict("Garbage piled up for days, bad smell")` returns Garbage category. **Pass:** Correct category.
+- [x] T3.6 — `predict("")` or `predict("   ")` returns a handled result or error, not a crash. **Pass:** Graceful handling.
+- [x] T3.7 — If Random Forest was trained, comparison table exists in `docs/evaluation.md`. **Pass:** Side-by-side metrics.
+- [x] T3.8 — Inference latency per prediction < 100ms on local machine. **Pass:** Timed measurement.
 
 ---
 
