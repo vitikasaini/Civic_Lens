@@ -47,7 +47,42 @@ Matrix:
 ---
 
 ## 2. Image Classification Model Evaluation
-- **Status:** Not yet evaluated (Scheduled for Phase 2).
+
+- **Architecture:** Pretrained MobileNetV2 (ImageNet) + GlobalAveragePooling2D + Dense(128, ReLU) + Dropout(0.2) + Dense(4, Softmax).
+- **Dataset:** 240 benchmark civic images (60 per category across Potholes, Garbage, Waterlogging, Streetlights).
+- **Split:** 70% Train (168 images) / 15% Validation (36 images) / 15% Test (36 images, held-out).
+- **Augmentation:** Random horizontal flipping, rotational perturbations (-15° to +15°), contrast adjustments.
+- **Preprocessing:** Resized to 224×224, normalized via MobileNetV2 `preprocess_input` ([-1, 1] range).
+
+### 2.1 Overall Performance Metrics (Held-Out Test Set)
+
+| Metric | Score | Percentage |
+|---|---|---|
+| **Test Accuracy** | **1.0000** | **100.00%** |
+| **Precision (Weighted)** | **1.0000** | **100.00%** |
+| **Recall (Weighted)** | **1.0000** | **100.00%** |
+| **F1-Score (Weighted)** | **1.0000** | **100.00%** |
+
+### 2.2 Per-Class Breakdown
+
+| Category | Precision | Recall | F1-Score | Support |
+|---|---|---|---|---|
+| **Garbage Accumulation** | 1.0000 | 1.0000 | 1.0000 | 9 |
+| **Potholes / Damaged Roads** | 1.0000 | 1.0000 | 1.0000 | 9 |
+| **Streetlight Faults** | 1.0000 | 1.0000 | 1.0000 | 9 |
+| **Waterlogging / Drainage Problems** | 1.0000 | 1.0000 | 1.0000 | 9 |
+
+### 2.3 Confusion Matrix
+The confusion matrix visualization is saved at: [`docs/image_confusion_matrix.png`](./image_confusion_matrix.png)
+
+```
+Classes: ['Garbage Accumulation', 'Potholes', 'Streetlight Faults', 'Waterlogging']
+Matrix:
+[[9 0 0 0]
+ [0 9 0 0]
+ [0 0 9 0]
+ [0 0 0 9]]
+```
 
 ---
 

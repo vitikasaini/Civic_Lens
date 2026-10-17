@@ -96,41 +96,41 @@ Train the image classifier using transfer learning with MobileNetV2 (or verified
 
 ### Subtasks
 
-- [ ] **2.1 — Dataset preparation**
-  - [ ] 2.1.1 — Collect / download datasets for all 4 categories. Document source, size, and license for each.
-  - [ ] 2.1.2 — Organize into `data/images/{category}/` folder structure.
-  - [ ] 2.1.3 — Preprocess images: resize to model input size (e.g., 224×224), normalize pixel values. Use OpenCV or framework utilities.
-  - [ ] 2.1.4 — Split into train / validation / test sets (e.g., 70/15/15). Document split sizes.
-  - [ ] 2.1.5 — Apply data augmentation (rotation, flip, brightness) for training set to handle class imbalance.
+- [x] **2.1 — Dataset preparation**
+  - [x] 2.1.1 — Collect / download datasets for all 4 categories. Document source, size, and license for each.
+  - [x] 2.1.2 — Organize into `data/images/{category}/` folder structure.
+  - [x] 2.1.3 — Preprocess images: resize to model input size (e.g., 224×224), normalize pixel values. Use OpenCV or framework utilities.
+  - [x] 2.1.4 — Split into train / validation / test sets (e.g., 70/15/15). Document split sizes.
+  - [x] 2.1.5 — Apply data augmentation (rotation, flip, brightness) for training set to handle class imbalance.
 
-- [ ] **2.2 — Model training**
-  - [ ] 2.2.1 — Load pretrained MobileNetV2 (ImageNet weights), freeze base layers.
-  - [ ] 2.2.2 — Add custom classification head: GlobalAveragePooling → Dense(128, relu) → Dropout → Dense(4, softmax).
-  - [ ] 2.2.3 — Train on training set, validate on validation set. Track loss and accuracy curves.
-  - [ ] 2.2.4 — Fine-tune top layers if initial accuracy is insufficient.
-  - [ ] 2.2.5 — Save trained model weights to `backend/ml/models/image_model.*`.
+- [x] **2.2 — Model training**
+  - [x] 2.2.1 — Load pretrained MobileNetV2 (ImageNet weights), freeze base layers.
+  - [x] 2.2.2 — Add custom classification head: GlobalAveragePooling → Dense(128, relu) → Dropout → Dense(4, softmax).
+  - [x] 2.2.3 — Train on training set, validate on validation set. Track loss and accuracy curves.
+  - [x] 2.2.4 — Fine-tune top layers if initial accuracy is insufficient.
+  - [x] 2.2.5 — Save trained model weights to `backend/ml/models/image_model.*`.
 
-- [ ] **2.3 — Model evaluation**
-  - [ ] 2.3.1 — Evaluate on held-out test set: accuracy, precision, recall, F1-score per class.
-  - [ ] 2.3.2 — Generate and save confusion matrix.
-  - [ ] 2.3.3 — Document results in `docs/evaluation.md`. If a category performs poorly, document why and potential improvements.
+- [x] **2.3 — Model evaluation**
+  - [x] 2.3.1 — Evaluate on held-out test set: accuracy, precision, recall, F1-score per class.
+  - [x] 2.3.2 — Generate and save confusion matrix.
+  - [x] 2.3.3 — Document results in `docs/evaluation.md`. If a category performs poorly, document why and potential improvements.
 
-- [ ] **2.4 — Inference module**
-  - [ ] 2.4.1 — Create `backend/ml/image_classifier.py` with a `predict(image_path) → (category, confidence)` function.
-  - [ ] 2.4.2 — Module loads model once on startup, reuses for all predictions.
-  - [ ] 2.4.3 — Handle edge cases: corrupted image, unsupported format, very small image.
+- [x] **2.4 — Inference module**
+  - [x] 2.4.1 — Create `backend/ml/image_classifier.py` with a `predict(image_path) → (category, confidence)` function.
+  - [x] 2.4.2 — Module loads model once on startup, reuses for all predictions.
+  - [x] 2.4.3 — Handle edge cases: corrupted image, unsupported format, very small image.
 
 ### Phase 2 — Verification Tests
 
-- [ ] T2.1 — Dataset folders contain images for all 4 categories, each with ≥ 50 images (or documented minimum). **Pass:** `ls data/images/*/` shows files.
-- [ ] T2.2 — Train/val/test split has no data leakage (no image in more than one split). **Pass:** Script verifies no filename overlap.
-- [ ] T2.3 — Model training completes without errors, loss decreases over epochs. **Pass:** Training log shows convergence.
-- [ ] T2.4 — Test-set accuracy ≥ baseline (document actual number, don't invent it). **Pass:** Metrics printed and logged.
-- [ ] T2.5 — Confusion matrix saved as image file. **Pass:** File exists, visually interpretable.
-- [ ] T2.6 — `predict("path/to/pothole.jpg")` returns `("Potholes / Damaged Roads", 0.XX)`. **Pass:** Correct category, float confidence.
-- [ ] T2.7 — `predict("path/to/corrupted_file")` raises/returns a handled error, not a crash. **Pass:** Graceful error handling.
-- [ ] T2.8 — `predict()` called 10 times in sequence: model is loaded only once (check timing or logs). **Pass:** No re-load overhead.
-- [ ] T2.9 — `docs/evaluation.md` exists with real metrics — no invented numbers. **Pass:** File review.
+- [x] T2.1 — Dataset folders contain images for all 4 categories, each with ≥ 50 images (or documented minimum). **Pass:** `ls data/images/*/` shows files.
+- [x] T2.2 — Train/val/test split has no data leakage (no image in more than one split). **Pass:** Script verifies no filename overlap.
+- [x] T2.3 — Model training completes without errors, loss decreases over epochs. **Pass:** Training log shows convergence.
+- [x] T2.4 — Test-set accuracy ≥ baseline (document actual number, don't invent it). **Pass:** Metrics printed and logged.
+- [x] T2.5 — Confusion matrix saved as image file. **Pass:** File exists, visually interpretable.
+- [x] T2.6 — `predict("path/to/pothole.jpg")` returns `("Potholes / Damaged Roads", 0.XX)`. **Pass:** Correct category, float confidence.
+- [x] T2.7 — `predict("path/to/corrupted_file")` raises/returns a handled error, not a crash. **Pass:** Graceful error handling.
+- [x] T2.8 — `predict()` called 10 times in sequence: model is loaded only once (check timing or logs). **Pass:** No re-load overhead.
+- [x] T2.9 — `docs/evaluation.md` exists with real metrics — no invented numbers. **Pass:** File review.
 
 ---
 
