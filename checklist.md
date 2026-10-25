@@ -305,34 +305,34 @@ Build the citizen-facing complaint submission form.
 
 ### Subtasks
 
-- [ ] **7.1 — Complaint form**
-  - [ ] 7.1.1 — Create submission page with fields: image upload (with preview), text description (textarea), location picker (map click or manual lat/lng), citizen severity dropdown (Minor / Moderate / Severe).
-  - [ ] 7.1.2 — Client-side validation: all fields required, image must be an image file, description min length (e.g., 10 chars).
-  - [ ] 7.1.3 — Submit form data to `POST /api/complaints` via multipart fetch/axios call.
-  - [ ] 7.1.4 — Show success confirmation with complaint ID after submission.
-  - [ ] 7.1.5 — Show meaningful error messages on failure (server errors, validation errors).
+- [x] **7.1 — Complaint form**
+  - [x] 7.1.1 — Create submission page with fields: image upload (with preview), text description (textarea), location picker (map click or manual lat/lng), citizen severity dropdown (Minor / Moderate / Severe).
+  - [x] 7.1.2 — Client-side validation: all fields required, image must be an image file, description min length (e.g., 10 chars).
+  - [x] 7.1.3 — Submit form data to `POST /api/complaints` via multipart fetch/axios call.
+  - [x] 7.1.4 — Show success confirmation with complaint ID after submission.
+  - [x] 7.1.5 — Show meaningful error messages on failure (server errors, validation errors).
 
-- [ ] **7.2 — Location picker**
-  - [ ] 7.2.1 — Integrate Leaflet map for location selection.
-  - [ ] 7.2.2 — User clicks on map → lat/lng populated into the form.
-  - [ ] 7.2.3 — Show a marker at the selected location.
-  - [ ] 7.2.4 — (Optional) Reverse geocode to display a readable address.
+- [x] **7.2 — Location picker**
+  - [x] 7.2.1 — Integrate Leaflet map for location selection.
+  - [x] 7.2.2 — User clicks on map → lat/lng populated into the form.
+  - [x] 7.2.3 — Show a marker at the selected location.
+  - [x] 7.2.4 — (Optional) Reverse geocode to display a readable address.
 
-- [ ] **7.3 — Styling & UX**
-  - [ ] 7.3.1 — Clean, accessible, mobile-friendly layout.
-  - [ ] 7.3.2 — Loading indicator during submission (API may take a few seconds due to ML processing).
+- [x] **7.3 — Styling & UX**
+  - [x] 7.3.1 — Clean, accessible, mobile-friendly layout.
+  - [x] 7.3.2 — Loading indicator during submission (API may take a few seconds due to ML processing).
 
 ### Phase 7 — Verification Tests
 
-- [ ] T7.1 — Form renders with all required fields visible. **Pass:** Visual inspection.
-- [ ] T7.2 — Submitting with empty fields shows validation errors. **Pass:** Client-side validation fires.
-- [ ] T7.3 — Uploading a non-image file is rejected. **Pass:** Error message shown.
-- [ ] T7.4 — Clicking on the Leaflet map populates lat/lng in the form. **Pass:** Values appear in fields / state.
-- [ ] T7.5 — Submitting a valid complaint: success message shown with complaint ID. **Pass:** ID visible on screen.
-- [ ] T7.6 — After submission, complaint appears in `GET /api/complaints`. **Pass:** API returns the new complaint.
-- [ ] T7.7 — Loading indicator appears during submission and disappears after response. **Pass:** UX verified.
-- [ ] T7.8 — Form is usable on a narrow viewport (mobile width ≈ 375px). **Pass:** Responsive layout works.
-- [ ] T7.9 — Submitting an image + description + map location + severity "Severe" → DB record has all fields correctly populated including ML-computed category and severity. **Pass:** Full pipeline end-to-end from UI.
+- [x] T7.1 — Form renders with all required fields visible. **Pass:** Visual inspection.
+- [x] T7.2 — Submitting with empty fields shows validation errors. **Pass:** Client-side validation fires.
+- [x] T7.3 — Uploading a non-image file is rejected. **Pass:** Error message shown.
+- [x] T7.4 — Clicking on the Leaflet map populates lat/lng in the form. **Pass:** Values appear in fields / state.
+- [x] T7.5 — Submitting a valid complaint: success message shown with complaint ID. **Pass:** ID visible on screen.
+- [x] T7.6 — After submission, complaint appears in `GET /api/complaints`. **Pass:** API returns the new complaint.
+- [x] T7.7 — Loading indicator appears during submission and disappears after response. **Pass:** UX verified.
+- [x] T7.8 — Form is usable on a narrow viewport (mobile width ≈ 375px). **Pass:** Responsive layout works.
+- [x] T7.9 — Submitting an image + description + map location + severity "Severe" → DB record has all fields correctly populated including ML-computed category and severity. **Pass:** Full pipeline end-to-end from UI.
 
 ---
 
@@ -342,46 +342,46 @@ Build the authority-facing dashboard with complaint table, filters, status manag
 
 ### Subtasks
 
-- [ ] **8.1 — Dashboard overview**
-  - [ ] 8.1.1 — Summary cards at top: Total Complaints, High Priority, Pending (Reported), In Progress, Resolved. Data from `GET /api/dashboard/summary`.
-  - [ ] 8.1.2 — Auto-refresh or manual refresh button.
+- [x] **8.1 — Dashboard overview**
+  - [x] 8.1.1 — Summary cards at top: Total Complaints, High Priority, Pending (Reported), In Progress, Resolved. Data from `GET /api/dashboard/summary`.
+  - [x] 8.1.2 — Auto-refresh or manual refresh button.
 
-- [ ] **8.2 — Complaint table**
-  - [ ] 8.2.1 — Table columns: ID, Category, Location (lat/lng or name), Severity, Priority Score, Similar Count, Status, Timestamp.
-  - [ ] 8.2.2 — Rows color-coded or badged by priority level (High = red, Medium = yellow, Low = green).
-  - [ ] 8.2.3 — Click on a row → expand or navigate to detail view showing: image, description, severity breakdown, priority factors, similar complaints, status history.
+- [x] **8.2 — Complaint table**
+  - [x] 8.2.1 — Table columns: ID, Category, Location (lat/lng or name), Severity, Priority Score, Similar Count, Status, Timestamp.
+  - [x] 8.2.2 — Rows color-coded or badged by priority level (High = red, Medium = yellow, Low = green).
+  - [x] 8.2.3 — Click on a row → expand or navigate to detail view showing: image, description, severity breakdown, priority factors, similar complaints, status history.
 
-- [ ] **8.3 — Filtering & sorting**
-  - [ ] 8.3.1 — Filter dropdowns: Category (all 4 + "All"), Severity (Low/Medium/High + "All"), Status (Reported/In Progress/Resolved + "All"), Priority level (High/Medium/Low + "All").
-  - [ ] 8.3.2 — Default sort: priority descending. Toggle to sort by date.
-  - [ ] 8.3.3 — Filters compose: e.g., category = Pothole AND status = Reported.
+- [x] **8.3 — Filtering & sorting**
+  - [x] 8.3.1 — Filter dropdowns: Category (all 4 + "All"), Severity (Low/Medium/High + "All"), Status (Reported/In Progress/Resolved + "All"), Priority level (High/Medium/Low + "All").
+  - [x] 8.3.2 — Default sort: priority descending. Toggle to sort by date.
+  - [x] 8.3.3 — Filters compose: e.g., category = Pothole AND status = Reported.
 
-- [ ] **8.4 — Status management**
-  - [ ] 8.4.1 — Status update button/dropdown on each complaint: Reported → In Progress → Resolved.
-  - [ ] 8.4.2 — Calls `PATCH /api/complaints/{id}/status`.
-  - [ ] 8.4.3 — Dashboard updates after status change (optimistic or refetch).
-  - [ ] 8.4.4 — Status history visible in complaint detail view.
+- [x] **8.4 — Status management**
+  - [x] 8.4.1 — Status update button/dropdown on each complaint: Reported → In Progress → Resolved.
+  - [x] 8.4.2 — Calls `PATCH /api/complaints/{id}/status`.
+  - [x] 8.4.3 — Dashboard updates after status change (optimistic or refetch).
+  - [x] 8.4.4 — Status history visible in complaint detail view.
 
-- [ ] **8.5 — Interactive map**
-  - [ ] 8.5.1 — Leaflet map showing all complaint locations.
-  - [ ] 8.5.2 — Markers color-coded by priority level (High = red, Medium = orange, Low = green).
-  - [ ] 8.5.3 — Click on marker → popup showing complaint summary (ID, category, severity, status).
-  - [ ] 8.5.4 — Map filters sync with table filters (filtering by category hides non-matching markers too).
+- [x] **8.5 — Interactive map**
+  - [x] 8.5.1 — Leaflet map showing all complaint locations.
+  - [x] 8.5.2 — Markers color-coded by priority level (High = red, Medium = orange, Low = green).
+  - [x] 8.5.3 — Click on marker → popup showing complaint summary (ID, category, severity, status).
+  - [x] 8.5.4 — Map filters sync with table filters (filtering by category hides non-matching markers too).
 
 ### Phase 8 — Verification Tests
 
-- [ ] T8.1 — Dashboard summary cards show correct counts (verified against DB). **Pass:** Numbers match query.
-- [ ] T8.2 — Complaint table displays all complaints with correct data in each column. **Pass:** Spot-check 5 rows against DB.
-- [ ] T8.3 — Clicking a row shows detail view with image, description, severity breakdown, priority factors. **Pass:** All fields present.
-- [ ] T8.4 — Filter by category "Garbage" → only Garbage complaints shown in table AND map. **Pass:** Count matches.
-- [ ] T8.5 — Filter by severity "High" + status "Reported" → only matching complaints shown. **Pass:** Composite filter works.
-- [ ] T8.6 — Default sort is by priority descending. **Pass:** First row has highest priority.
-- [ ] T8.7 — Changing status from Reported → In Progress: API call succeeds, row updates, summary card counts update. **Pass:** All three verified.
-- [ ] T8.8 — Status history shows the transition timestamps. **Pass:** History entries visible.
-- [ ] T8.9 — Map shows markers at correct lat/lng positions. **Pass:** Visual check against data.
-- [ ] T8.10 — Map markers are color-coded by priority. **Pass:** Red/orange/green visible.
-- [ ] T8.11 — Clicking a map marker shows popup with complaint info. **Pass:** Popup content correct.
-- [ ] T8.12 — Map filters sync with table filters. **Pass:** Markers and rows match.
+- [x] T8.1 — Dashboard summary cards show correct counts (verified against DB). **Pass:** Numbers match query.
+- [x] T8.2 — Complaint table displays all complaints with correct data in each column. **Pass:** Spot-check 5 rows against DB.
+- [x] T8.3 — Clicking a row shows detail view with image, description, severity breakdown, priority factors. **Pass:** All fields present.
+- [x] T8.4 — Filter by category "Garbage" → only Garbage complaints shown in table AND map. **Pass:** Count matches.
+- [x] T8.5 — Filter by severity "High" + status "Reported" → only matching complaints shown. **Pass:** Composite filter works.
+- [x] T8.6 — Default sort is by priority descending. **Pass:** First row has highest priority.
+- [x] T8.7 — Changing status from Reported → In Progress: API call succeeds, row updates, summary card counts update. **Pass:** All three verified.
+- [x] T8.8 — Status history shows the transition timestamps. **Pass:** History entries visible.
+- [x] T8.9 — Map shows markers at correct lat/lng positions. **Pass:** Visual check against data.
+- [x] T8.10 — Map markers are color-coded by priority. **Pass:** Red/orange/green visible.
+- [x] T8.11 — Clicking a map marker shows popup with complaint info. **Pass:** Popup content correct.
+- [x] T8.12 — Map filters sync with table filters. **Pass:** Markers and rows match.
 
 ---
 

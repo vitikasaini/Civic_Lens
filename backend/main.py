@@ -43,6 +43,10 @@ app.add_middleware(
 # Static file serving for uploaded complaint images
 app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
+FRONTEND_DIST = BASE_DIR / "frontend" / "dist"
+if (FRONTEND_DIST / "assets").exists():
+    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="frontend_assets")
+
 # Include API routers
 app.include_router(complaints_router)
 app.include_router(dashboard_router)
@@ -52,6 +56,16 @@ app.include_router(dashboard_router)
 def root():
     """Health check endpoint."""
     return {"status": "ok", "project": "CivicLens", "version": "1.0.0"}
+
+
+@app.get("/app", include_in_schema=False)
+def serve_app():
+    """Serves the built React SPA."""
+    from fastapi.responses import FileResponse
+    index_file = FRONTEND_DIST / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"message": "Frontend not built yet. Run 'npm run build' in frontend/"}
 
 
 @app.get("/health", tags=["Health"])

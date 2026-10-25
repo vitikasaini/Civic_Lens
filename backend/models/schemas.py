@@ -82,3 +82,8 @@ class DashboardSummary(BaseModel):
     pending: int
     in_progress: int
     resolved: int
+    total_complaints: Optional[int] = None
+    high_priority_complaints: Optional[int] = None
+    pending_complaints: Optional[int] = None
+    in_progress_complaints: Optional[int] = None
+    resolved_complaints: Optional[int] = None

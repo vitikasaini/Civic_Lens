@@ -60,4 +60,9 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
         pending=pending,
         in_progress=in_progress,
         resolved=resolved,
+        total_complaints=total,
+        high_priority_complaints=high_priority,
+        pending_complaints=pending,
+        in_progress_complaints=in_progress,
+        resolved_complaints=resolved,
     )
