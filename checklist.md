@@ -225,36 +225,36 @@ Identify and group related complaints using location, text similarity, and categ
 
 ### Subtasks
 
-- [ ] **5.1 — Spatial grouping**
-  - [ ] 5.1.1 — Create `backend/ml/grouping.py`.
-  - [ ] 5.1.2 — Implement Haversine distance function between two lat/lng pairs.
-  - [ ] 5.1.3 — Implement DBSCAN-based spatial clustering on complaint coordinates. Define `eps` (e.g., 500m) and `min_samples` parameters (document chosen values).
+- [x] **5.1 — Spatial grouping**
+  - [x] 5.1.1 — Create `backend/ml/grouping.py`.
+  - [x] 5.1.2 — Implement Haversine distance function between two lat/lng pairs.
+  - [x] 5.1.3 — Implement DBSCAN-based spatial clustering on complaint coordinates. Define `eps` (e.g., 500m) and `min_samples` parameters (document chosen values).
 
-- [ ] **5.2 — Text similarity**
-  - [ ] 5.2.1 — Compute cosine similarity between TF-IDF vectors of complaint descriptions.
-  - [ ] 5.2.2 — Define similarity threshold (document the chosen value).
+- [x] **5.2 — Text similarity**
+  - [x] 5.2.1 — Compute cosine similarity between TF-IDF vectors of complaint descriptions.
+  - [x] 5.2.2 — Define similarity threshold (document the chosen value).
 
-- [ ] **5.3 — Combined grouping logic**
-  - [ ] 5.3.1 — Group complaints that share: same category AND (spatial cluster OR text similarity above threshold).
-  - [ ] 5.3.2 — Assign a `group_id` to grouped complaints and update `similar_count` for each.
-  - [ ] 5.3.3 — Re-run grouping when a new complaint is submitted (or batch periodically).
+- [x] **5.3 — Combined grouping logic**
+  - [x] 5.3.1 — Group complaints that share: same category AND (spatial cluster OR text similarity above threshold).
+  - [x] 5.3.2 — Assign a `group_id` to grouped complaints and update `similar_count` for each.
+  - [x] 5.3.3 — Re-run grouping when a new complaint is submitted (or batch periodically).
 
-- [ ] **5.4 — API exposure**
-  - [ ] 5.4.1 — `GET /api/complaints/{id}/similar` — returns list of complaints in the same group.
-  - [ ] 5.4.2 — Group info included in `GET /api/complaints/{id}` response.
+- [x] **5.4 — API exposure**
+  - [x] 5.4.1 — `GET /api/complaints/{id}/similar` — returns list of complaints in the same group.
+  - [x] 5.4.2 — Group info included in `GET /api/complaints/{id}` response.
 
 ### Phase 5 — Verification Tests
 
-- [ ] T5.1 — Haversine distance between two known coordinates matches expected value (±1m). **Pass:** Manual calculation verified.
-- [ ] T5.2 — DBSCAN clusters 3 complaints within 200m of each other into 1 group. **Pass:** Group IDs match.
-- [ ] T5.3 — DBSCAN keeps 2 complaints 5km apart in separate groups. **Pass:** Different group IDs.
-- [ ] T5.4 — Text similarity: two nearly identical descriptions → similarity > threshold. **Pass:** Cosine similarity checked.
-- [ ] T5.5 — Text similarity: unrelated descriptions → similarity < threshold. **Pass:** Below threshold.
-- [ ] T5.6 — Combined grouping: same category + nearby + similar text → grouped. **Pass:** Grouped correctly.
-- [ ] T5.7 — Combined grouping: same location but different category → NOT grouped. **Pass:** Separate groups.
-- [ ] T5.8 — `similar_count` for a grouped complaint reflects the correct count. **Pass:** Count matches.
-- [ ] T5.9 — `GET /api/complaints/{id}/similar` returns the correct related complaints. **Pass:** Correct list.
-- [ ] T5.10 — Submitting a new complaint near existing ones triggers re-grouping. **Pass:** Group updated.
+- [x] T5.1 — Haversine distance between two known coordinates matches expected value (±1m). **Pass:** Manual calculation verified.
+- [x] T5.2 — DBSCAN clusters 3 complaints within 200m of each other into 1 group. **Pass:** Group IDs match.
+- [x] T5.3 — DBSCAN keeps 2 complaints 5km apart in separate groups. **Pass:** Different group IDs.
+- [x] T5.4 — Text similarity: two nearly identical descriptions → similarity > threshold. **Pass:** Cosine similarity checked.
+- [x] T5.5 — Text similarity: unrelated descriptions → similarity < threshold. **Pass:** Below threshold.
+- [x] T5.6 — Combined grouping: same category + nearby + similar text → grouped. **Pass:** Grouped correctly.
+- [x] T5.7 — Combined grouping: same location but different category → NOT grouped. **Pass:** Separate groups.
+- [x] T5.8 — `similar_count` for a grouped complaint reflects the correct count. **Pass:** Count matches.
+- [x] T5.9 — `GET /api/complaints/{id}/similar` returns the correct related complaints. **Pass:** Correct list.
+- [x] T5.10 — Submitting a new complaint near existing ones triggers re-grouping. **Pass:** Group updated.
 
 ---
 

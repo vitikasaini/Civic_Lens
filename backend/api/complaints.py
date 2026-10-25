@@ -189,6 +189,14 @@ async def create_complaint(
     )
     db.add(initial_history)
     db.commit()
+
+    # 7. Recompute grouping across complaints to link any nearby/similar complaints
+    try:
+        from backend.ml.grouping import recompute_all_groups
+        recompute_all_groups(db)
+    except Exception as exc:
+        logger.warning(f"Error recomputing complaint groups: {exc}")
+
     db.refresh(new_complaint)
 
     return ComplaintCreateResponse(
@@ -260,6 +268,35 @@ def get_complaint(complaint_id: int, db: Session = Depends(get_db)):
             detail=f"Complaint with ID {complaint_id} not found.",
         )
     return complaint
+
+
+@router.get(
+    "/{complaint_id}/similar",
+    response_model=List[ComplaintListItem],
+    summary="Get similar and duplicate complaints in the same group",
+)
+def get_similar_complaints(complaint_id: int, db: Session = Depends(get_db)):
+    """
+    Returns list of complaints in the same group as this complaint (excluding self).
+    If unassigned or group size 1, returns empty list.
+    """
+    complaint = db.query(Complaint).filter(Complaint.id == complaint_id).first()
+    if not complaint:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Complaint with ID {complaint_id} not found.",
+        )
+
+    if complaint.group_id is None:
+        return []
+
+    similar = (
+        db.query(Complaint)
+        .filter(Complaint.group_id == complaint.group_id, Complaint.id != complaint.id)
+        .order_by(desc(Complaint.created_at))
+        .all()
+    )
+    return similar
 
 
 @router.patch(
