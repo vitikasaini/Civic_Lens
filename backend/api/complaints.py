@@ -49,6 +49,7 @@ VALID_STATUS_TRANSITIONS = {
 
 
 def get_utc_now():
+    """Returns the current timezone-aware UTC datetime."""
     return datetime.now(timezone.utc)
 
 
@@ -110,6 +111,17 @@ async def create_complaint(
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Unsupported file format '{file_ext}'. Allowed formats: {sorted(allowed_extensions)}",
+        )
+
+    # Check file size (max 10MB)
+    image.file.seek(0, 2)
+    file_size = image.file.tell()
+    image.file.seek(0)
+    MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024
+    if file_size > MAX_IMAGE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Image file exceeds maximum allowed size of 10MB ({file_size / (1024*1024):.2f}MB).",
         )
 
     # 3. Save file to disk

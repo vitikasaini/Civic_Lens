@@ -391,39 +391,39 @@ Wire everything together and verify the complete workflow from citizen submissio
 
 ### Subtasks
 
-- [ ] **9.1 — End-to-end pipeline verification**
-  - [ ] 9.1.1 — Submit 10+ test complaints covering all 4 categories, varying severities, and both nearby and distant locations.
-  - [ ] 9.1.2 — Verify each complaint flows through: submission → image classification → text classification → category resolution → severity assessment → grouping → priority calculation → appears on dashboard → appears on map.
-  - [ ] 9.1.3 — Verify grouped complaints share `group_id` and correct `similar_count`.
-  - [ ] 9.1.4 — Verify priority ordering on dashboard makes intuitive sense for the test data.
+- [x] **9.1 — End-to-end pipeline verification**
+  - [x] 9.1.1 — Submit 10+ test complaints covering all 4 categories, varying severities, and both nearby and distant locations.
+  - [x] 9.1.2 — Verify each complaint flows through: submission → image classification → text classification → category resolution → severity assessment → grouping → priority calculation → appears on dashboard → appears on map.
+  - [x] 9.1.3 — Verify grouped complaints share `group_id` and correct `similar_count`.
+  - [x] 9.1.4 — Verify priority ordering on dashboard makes intuitive sense for the test data.
 
-- [ ] **9.2 — Status workflow**
-  - [ ] 9.2.1 — Walk a complaint through Reported → In Progress → Resolved and verify status history.
-  - [ ] 9.2.2 — Verify dashboard summary cards update correctly.
+- [x] **9.2 — Status workflow**
+  - [x] 9.2.1 — Walk a complaint through Reported → In Progress → Resolved and verify status history.
+  - [x] 9.2.2 — Verify dashboard summary cards update correctly.
 
-- [ ] **9.3 — Edge cases & error handling**
-  - [ ] 9.3.1 — Submit complaint with very large image (>10MB) — system handles gracefully (reject or resize).
-  - [ ] 9.3.2 — Submit complaint with minimal description (1–2 words) — text classifier handles gracefully.
-  - [ ] 9.3.3 — Submit complaint at coordinates (0, 0) or extreme values — system handles gracefully.
-  - [ ] 9.3.4 — What happens if the ML model file is missing on startup? — clear error message, not a silent failure.
+- [x] **9.3 — Edge cases & error handling**
+  - [x] 9.3.1 — Submit complaint with very large image (>10MB) — system handles gracefully (reject or resize).
+  - [x] 9.3.2 — Submit complaint with minimal description (1–2 words) — text classifier handles gracefully.
+  - [x] 9.3.3 — Submit complaint at coordinates (0, 0) or extreme values — system handles gracefully.
+  - [x] 9.3.4 — What happens if the ML model file is missing on startup? — clear error message, not a silent failure.
 
-- [ ] **9.4 — Performance sanity check**
-  - [ ] 9.4.1 — Measure end-to-end latency: complaint submission to result available on dashboard.
-  - [ ] 9.4.2 — Dashboard loads within a reasonable time with 50+ complaints in DB.
+- [x] **9.4 — Performance sanity check**
+  - [x] 9.4.1 — Measure end-to-end latency: complaint submission to result available on dashboard.
+  - [x] 9.4.2 — Dashboard loads within a reasonable time with 50+ complaints in DB.
 
 ### Phase 9 — Verification Tests
 
-- [ ] T9.1 — 10 test complaints submitted → all 10 visible on dashboard with category, severity, priority. **Pass:** 100% pipeline completion.
-- [ ] T9.2 — At least 2 nearby same-category complaints are grouped together. **Pass:** Grouping visible in detail view.
-- [ ] T9.3 — Priority ordering: a High-severity, multi-complaint, sensitive-location issue ranks higher than a Low-severity isolated issue. **Pass:** Correct relative order.
-- [ ] T9.4 — Full status lifecycle (Reported → In Progress → Resolved) works, status history shows 2 transitions. **Pass:** History has 2 entries.
-- [ ] T9.5 — Dashboard summary cards match manual count of test data. **Pass:** All 5 counts correct.
-- [ ] T9.6 — Map shows all 10 complaints with correct color-coded markers. **Pass:** Visual verification.
-- [ ] T9.7 — Complaint detail view shows: image, description, category, severity breakdown, priority factors, similar complaints, status history. **Pass:** All sections present.
-- [ ] T9.8 — Large image submission handled gracefully. **Pass:** No crash, appropriate response.
-- [ ] T9.9 — Empty/short description handled gracefully. **Pass:** No crash, fallback behavior documented.
-- [ ] T9.10 — End-to-end submission latency < 30 seconds on local machine. **Pass:** Measured and logged.
-- [ ] T9.11 — Dashboard with 50+ complaints loads in < 5 seconds. **Pass:** Measured and logged.
+- [x] T9.1 — 10 test complaints submitted → all 10 visible on dashboard with category, severity, priority. **Pass:** 100% pipeline completion.
+- [x] T9.2 — At least 2 nearby same-category complaints are grouped together. **Pass:** Grouping visible in detail view.
+- [x] T9.3 — Priority ordering: a High-severity, multi-complaint, sensitive-location issue ranks higher than a Low-severity isolated issue. **Pass:** Correct relative order.
+- [x] T9.4 — Full status lifecycle (Reported → In Progress → Resolved) works, status history shows 2 transitions. **Pass:** History has 2 entries.
+- [x] T9.5 — Dashboard summary cards match manual count of test data. **Pass:** All 5 counts correct.
+- [x] T9.6 — Map shows all 10 complaints with correct color-coded markers. **Pass:** Visual verification.
+- [x] T9.7 — Complaint detail view shows: image, description, category, severity breakdown, priority factors, similar complaints, status history. **Pass:** All sections present.
+- [x] T9.8 — Large image submission handled gracefully. **Pass:** No crash, appropriate response.
+- [x] T9.9 — Empty/short description handled gracefully. **Pass:** No crash, fallback behavior documented.
+- [x] T9.10 — End-to-end submission latency < 30 seconds on local machine. **Pass:** Measured and logged.
+- [x] T9.11 — Dashboard with 50+ complaints loads in < 5 seconds. **Pass:** Measured and logged.
 
 ---
 
@@ -433,37 +433,37 @@ Formal evaluation of ML models and system performance. Final documentation.
 
 ### Subtasks
 
-- [ ] **10.1 — ML model evaluation (formal)**
-  - [ ] 10.1.1 — Image classifier: report final accuracy, precision, recall, F1 per class, confusion matrix on test set.
-  - [ ] 10.1.2 — Text classifier: report final accuracy, precision, recall, F1 per class, confusion matrix on test set.
-  - [ ] 10.1.3 — If any metric was not computed, state "Not yet evaluated" — do not invent numbers.
+- [x] **10.1 — ML model evaluation (formal)**
+  - [x] 10.1.1 — Image classifier: report final accuracy, precision, recall, F1 per class, confusion matrix on test set.
+  - [x] 10.1.2 — Text classifier: report final accuracy, precision, recall, F1 per class, confusion matrix on test set.
+  - [x] 10.1.3 — If any metric was not computed, state "Not yet evaluated" — do not invent numbers.
 
-- [ ] **10.2 — Severity validation**
-  - [ ] 10.2.1 — Select 20–30 complaints. Have a few human reviewers rate each as Low / Medium / High.
-  - [ ] 10.2.2 — Compute agreement rate between system severity and human ratings.
-  - [ ] 10.2.3 — Document results and analysis.
+- [x] **10.2 — Severity validation**
+  - [x] 10.2.1 — Select 20–30 complaints. Have a few human reviewers rate each as Low / Medium / High.
+  - [x] 10.2.2 — Compute agreement rate between system severity and human ratings.
+  - [x] 10.2.3 — Document results and analysis.
 
-- [ ] **10.3 — Priority validation**
-  - [ ] 10.3.1 — Select a sample of complaints. Have human reviewers rank them by priority.
-  - [ ] 10.3.2 — Compute Spearman correlation between system ranking and human ranking.
-  - [ ] 10.3.3 — Document results and analysis.
+- [x] **10.3 — Priority validation**
+  - [x] 10.3.1 — Select a sample of complaints. Have human reviewers rank them by priority.
+  - [x] 10.3.2 — Compute Spearman correlation between system ranking and human ranking.
+  - [x] 10.3.3 — Document results and analysis.
 
-- [ ] **10.4 — Documentation**
-  - [ ] 10.4.1 — Update `docs/evaluation.md` with all final metrics.
-  - [ ] 10.4.2 — Write `README.md` with: project overview, setup instructions, how to run, architecture diagram, API reference, known limitations.
-  - [ ] 10.4.3 — Document all design decisions in `docs/decisions.md`.
-  - [ ] 10.4.4 — Ensure code has adequate inline comments and docstrings.
+- [x] **10.4 — Documentation**
+  - [x] 10.4.1 — Update `docs/evaluation.md` with all final metrics.
+  - [x] 10.4.2 — Write `README.md` with: project overview, setup instructions, how to run, architecture diagram, API reference, known limitations.
+  - [x] 10.4.3 — Document all design decisions in `docs/decisions.md`.
+  - [x] 10.4.4 — Ensure code has adequate inline comments and docstrings.
 
 ### Phase 10 — Verification Tests
 
-- [ ] T10.1 — `docs/evaluation.md` contains image classifier metrics with real numbers. **Pass:** No placeholder values.
-- [ ] T10.2 — `docs/evaluation.md` contains text classifier metrics with real numbers. **Pass:** No placeholder values.
-- [ ] T10.3 — Confusion matrices (image & text) saved and referenced in docs. **Pass:** Files exist.
-- [ ] T10.4 — Severity validation: agreement rate computed for 20–30 complaints. **Pass:** Result documented.
-- [ ] T10.5 — Priority validation: Spearman correlation computed. **Pass:** Result documented.
-- [ ] T10.6 — `README.md` has setup instructions that a new developer can follow to run the project. **Pass:** Tested by following the README from scratch.
-- [ ] T10.7 — Following `README.md` instructions: `pip install`, `npm install`, start backend, start frontend — all succeed. **Pass:** Full local setup works.
-- [ ] T10.8 — All Python modules have docstrings on public classes and functions. **Pass:** Spot-check 10 modules.
+- [x] T10.1 — `docs/evaluation.md` contains image classifier metrics with real numbers. **Pass:** No placeholder values.
+- [x] T10.2 — `docs/evaluation.md` contains text classifier metrics with real numbers. **Pass:** No placeholder values.
+- [x] T10.3 — Confusion matrices (image & text) saved and referenced in docs. **Pass:** Files exist.
+- [x] T10.4 — Severity validation: agreement rate computed for 20–30 complaints. **Pass:** Result documented.
+- [x] T10.5 — Priority validation: Spearman correlation computed. **Pass:** Result documented.
+- [x] T10.6 — `README.md` has setup instructions that a new developer can follow to run the project. **Pass:** Tested by following the README from scratch.
+- [x] T10.7 — Following `README.md` instructions: `pip install`, `npm install`, start backend, start frontend — all succeed. **Pass:** Full local setup works.
+- [x] T10.8 — All Python modules have docstrings on public classes and functions. **Pass:** Spot-check 10 modules.
 
 ---
 

@@ -19,6 +19,7 @@ from backend.models.database import Base
 
 
 def utc_now():
+    """Returns timezone-aware UTC datetime for timestamp columns."""
     return datetime.now(timezone.utc)
 
 

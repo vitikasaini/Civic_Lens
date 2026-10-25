@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class StatusHistoryItem(BaseModel):
+    """Schema representing an individual status transition event."""
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -18,6 +19,7 @@ class StatusHistoryItem(BaseModel):
 
 
 class ComplaintCreateResponse(BaseModel):
+    """Response returned upon initial citizen complaint submission."""
     id: int
     status: str
     message: str
@@ -26,6 +28,7 @@ class ComplaintCreateResponse(BaseModel):
 
 
 class ComplaintListItem(BaseModel):
+    """Summarized complaint model for dashboard tables and lists."""
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -44,6 +47,7 @@ class ComplaintListItem(BaseModel):
 
 
 class ComplaintDetail(BaseModel):
+    """Full complaint detail schema with explainable factor breakdown and history."""
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -66,10 +70,12 @@ class ComplaintDetail(BaseModel):
 
 
 class StatusUpdateRequest(BaseModel):
+    """Payload schema for transitioning complaint workflow status."""
     new_status: str = Field(..., description="Target status: Reported, In Progress, or Resolved")
 
     @field_validator("new_status")
     def validate_status_value(cls, v):
+        """Validates that requested status belongs to the recognized set."""
         valid = {"Reported", "In Progress", "Resolved"}
         if v not in valid:
             raise ValueError(f"Invalid status: '{v}'. Must be one of: {', '.join(sorted(valid))}")
@@ -77,6 +83,7 @@ class StatusUpdateRequest(BaseModel):
 
 
 class DashboardSummary(BaseModel):
+    """KPI summary counts schema for authority dashboard."""
     total: int
     high_priority: int
     pending: int
