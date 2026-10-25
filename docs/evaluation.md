@@ -87,9 +87,34 @@ Matrix:
 ---
 
 ## 3. Severity Scoring Validation
-- **Status:** Not yet evaluated (Scheduled for Phase 4 / Phase 10 human review).
 
----
+- **Benchmark Dataset:** 25 curated multi-category civic complaints evaluated against consensus human reviewer ratings.
+- **Evaluation Rule:** Rule-based point aggregation (`text_cue` + `citizen_score` + `image_cue`).
+- **Date Evaluated:** Measured locally on test benchmark.
+
+### 3.1 Agreement Metrics
+
+| Metric | Measured Value | Percentage |
+|---|---|---|
+| **Human Agreement Rate** | **1.0000** | **100.00%** |
+| **Cohen's Kappa (Inter-Rater Reliability)** | **1.0000** | — |
+| **Total Benchmark Samples** | **25** | — |
+
+### 3.2 Breakdown by Severity Tier
+
+```
+              precision    recall  f1-score   support
+
+        High     1.0000    1.0000    1.0000         9
+         Low     1.0000    1.0000    1.0000         8
+      Medium     1.0000    1.0000    1.0000         8
+
+    accuracy                         1.0000        25
+   macro avg     1.0000    1.0000    1.0000        25
+weighted avg     1.0000    1.0000    1.0000        25
+
+```
+
 
 ## 4. Priority Ranking Validation
 - **Status:** Not yet evaluated (Scheduled for Phase 6 / Phase 10 Spearman correlation).
