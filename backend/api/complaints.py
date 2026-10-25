@@ -190,12 +190,14 @@ async def create_complaint(
     db.add(initial_history)
     db.commit()
 
-    # 7. Recompute grouping across complaints to link any nearby/similar complaints
+    # 7. Recompute grouping and priority across complaints
     try:
         from backend.ml.grouping import recompute_all_groups
+        from backend.ml.priority import recalculate_all_priorities
         recompute_all_groups(db)
+        recalculate_all_priorities(db)
     except Exception as exc:
-        logger.warning(f"Error recomputing complaint groups: {exc}")
+        logger.warning(f"Error recomputing complaint groups or priorities: {exc}")
 
     db.refresh(new_complaint)
 

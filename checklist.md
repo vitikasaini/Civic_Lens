@@ -264,36 +264,36 @@ Calculate and expose the priority score with its contributing factors.
 
 ### Subtasks
 
-- [ ] **6.1 — Priority calculation**
-  - [ ] 6.1.1 — Create `backend/ml/priority.py`.
-  - [ ] 6.1.2 — Implement normalization for each factor (0–1):
+- [x] **6.1 — Priority calculation**
+  - [x] 6.1.1 — Create `backend/ml/priority.py`.
+  - [x] 6.1.2 — Implement normalization for each factor (0–1):
     - Severity: Low → 0.33, Medium → 0.67, High → 1.0.
     - Similar complaints: `min(count / cap, 1.0)` — define and document the cap.
     - Location importance: 1.0 if within radius of a sensitive location, 0.5 otherwise (or use the decided scheme from Phase 0).
     - Time since reporting: `min(days_elapsed / max_days, 1.0)` — define and document `max_days`.
-  - [ ] 6.1.3 — Apply formula: `Priority = 0.40 × Severity + 0.25 × Similar + 0.20 × Location + 0.15 × Time`.
-  - [ ] 6.1.4 — Return the score AND factor breakdown: `{score: 0.73, severity: {value: "High", normalized: 1.0, weight: 0.40, contribution: 0.40}, ...}`.
+  - [x] 6.1.3 — Apply formula: `Priority = 0.40 × Severity + 0.25 × Similar + 0.20 × Location + 0.15 × Time`.
+  - [x] 6.1.4 — Return the score AND factor breakdown: `{score: 0.73, severity: {value: "High", normalized: 1.0, weight: 0.40, contribution: 0.40}, ...}`.
 
-- [ ] **6.2 — Integration**
-  - [ ] 6.2.1 — After severity & grouping are computed, calculate priority and store `priority_score` + `priority_factors` in the DB.
-  - [ ] 6.2.2 — Recalculate priority when grouping changes (new similar complaint found) or time elapses (could be a batch job or on-read).
+- [x] **6.2 — Integration**
+  - [x] 6.2.1 — After severity & grouping are computed, calculate priority and store `priority_score` + `priority_factors` in the DB.
+  - [x] 6.2.2 — Recalculate priority when grouping changes (new similar complaint found) or time elapses (could be a batch job or on-read).
 
-- [ ] **6.3 — Dashboard priority API**
-  - [ ] 6.3.1 — `GET /api/complaints` sorted by `priority_score` descending by default.
-  - [ ] 6.3.2 — Priority factors included in complaint detail response.
+- [x] **6.3 — Dashboard priority API**
+  - [x] 6.3.1 — `GET /api/complaints` sorted by `priority_score` descending by default.
+  - [x] 6.3.2 — Priority factors included in complaint detail response.
 
 ### Phase 6 — Verification Tests
 
-- [ ] T6.1 — Severity normalization: Low → 0.33, Medium → 0.67, High → 1.0. **Pass:** All three correct.
-- [ ] T6.2 — Similar-complaint normalization: 0 complaints → 0.0, at cap → 1.0. **Pass:** Boundary values correct.
-- [ ] T6.3 — Location importance: complaint at a known sensitive location → 1.0. **Pass:** Lookup works.
-- [ ] T6.4 — Time normalization: 0 days → 0.0, max_days → 1.0. **Pass:** Boundary values correct.
-- [ ] T6.5 — Formula: hand-calculated example matches code output. **Pass:** Manual check against formula.
-- [ ] T6.6 — Priority factors JSON contains all 4 factors with value, normalized, weight, contribution. **Pass:** Structure validated.
-- [ ] T6.7 — Two complaints: one High severity + 8 similar + sensitive location + 10 days; one Low severity + 0 similar + non-sensitive + 1 day. First has higher priority. **Pass:** Correct ordering.
-- [ ] T6.8 — `GET /api/complaints?sort=priority` returns complaints in descending priority order. **Pass:** Order verified.
-- [ ] T6.9 — Dashboard shows contributing factors, not just a number. **Pass:** API response includes breakdown.
-- [ ] T6.10 — Adding a new similar complaint to a group updates the priority of existing complaints in that group. **Pass:** Scores recalculated.
+- [x] T6.1 — Severity normalization: Low → 0.33, Medium → 0.67, High → 1.0. **Pass:** All three correct.
+- [x] T6.2 — Similar-complaint normalization: 0 complaints → 0.0, at cap → 1.0. **Pass:** Boundary values correct.
+- [x] T6.3 — Location importance: complaint at a known sensitive location → 1.0. **Pass:** Lookup works.
+- [x] T6.4 — Time normalization: 0 days → 0.0, max_days → 1.0. **Pass:** Boundary values correct.
+- [x] T6.5 — Formula: hand-calculated example matches code output. **Pass:** Manual check against formula.
+- [x] T6.6 — Priority factors JSON contains all 4 factors with value, normalized, weight, contribution. **Pass:** Structure validated.
+- [x] T6.7 — Two complaints: one High severity + 8 similar + sensitive location + 10 days; one Low severity + 0 similar + non-sensitive + 1 day. First has higher priority. **Pass:** Correct ordering.
+- [x] T6.8 — `GET /api/complaints?sort=priority` returns complaints in descending priority order. **Pass:** Order verified.
+- [x] T6.9 — Dashboard shows contributing factors, not just a number. **Pass:** API response includes breakdown.
+- [x] T6.10 — Adding a new similar complaint to a group updates the priority of existing complaints in that group. **Pass:** Scores recalculated.
 
 ---
 

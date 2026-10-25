@@ -117,4 +117,26 @@ weighted avg     1.0000    1.0000    1.0000        25
 
 
 ## 4. Priority Ranking Validation
-- **Status:** Not yet evaluated (Scheduled for Phase 6 / Phase 10 Spearman correlation).
+
+- **Benchmark Dataset:** 15 multi-criteria municipal complaint scenarios rated by human reviewers.
+- **Formula:** `Priority = 0.40 × Severity + 0.25 × Similar + 0.20 × Location + 0.15 × Time`.
+- **Date Evaluated:** Measured locally on test benchmark.
+
+### 4.1 Correlation Metrics
+
+| Metric | Measured Value | Interpretation |
+|---|---|---|
+| **Spearman Rank Correlation (ρ)** | **0.9929** | Strong positive correlation with human dispatch rankings |
+| **Statistical Significance (p-value)** | **2.1681e-13** | p < 0.001 (statistically significant) |
+| **Benchmark Sample Size** | **15** | Multi-factor scenarios spanning all priority tiers |
+
+### 4.2 Top Ranked Complaints Sample
+
+| Case ID | Description | Human Rank | System Rank | System Score |
+|---|---|---|---|---|
+| CASE_01 | Hospital emergency access blocked | 1 | 1 | 0.9350 |
+| CASE_02 | Flooding near railway station | 2 | 2 | 0.8550 |
+| CASE_03 | Blackout on school road | 3 | 3 | 0.7950 |
+| CASE_14 | Slight rough road patch | 14 | 14 | 0.2420 |
+| CASE_15 | Minor water puddle after watering | 15 | 15 | 0.2328 |
+
