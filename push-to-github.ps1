@@ -27,7 +27,7 @@ git commit -m 'Initial commit - ready for GitHub'
 
 # -----------------------------------------------------------------
 # 5️⃣ Add the remote using the supplied PAT (the token is **not** stored)
-git remote add origin https://$PatToken@github.com/$GitHubUser/civicLens.git
+git remote add origin https://$PatToken@github.com/$GitHubUser/Civic_Lens.git
 
 # -----------------------------------------------------------------
 # 6️⃣ Push to GitHub
