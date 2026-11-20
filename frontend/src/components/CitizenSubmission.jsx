@@ -211,7 +211,7 @@ export default function CitizenSubmission({ onComplaintCreated }) {
               <textarea
                 id="description-input"
                 rows="4"
-                className="form-textarea"
+                className="form-textarea text-gray-900"
                 placeholder="Describe the issue in detail (e.g., Deep pothole near intersection causing vehicle damage, waterlogging for 3 days)..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -231,7 +231,7 @@ export default function CitizenSubmission({ onComplaintCreated }) {
               </label>
               <select
                 id="severity-select"
-                className="form-select"
+                className="form-select text-gray-900"
                 value={citizenSeverity}
                 onChange={(e) => setCitizenSeverity(e.target.value)}
                 disabled={loading}

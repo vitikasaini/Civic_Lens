@@ -179,15 +179,26 @@ body {
   color: #ef4444;
 }
 
-.form-textarea, .form-select, .filter-select {
+.form-textarea,
+.form-select,
+.filter-select {
   width: 100%;
   padding: 0.65rem 0.85rem;
   border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.95rem;
   background-color: #fff;
-  color: var(--text-main);
+  /* Font stack */
+  font-family: "Segoe UI", "San Francisco", "SF Pro", Roboto, sans-serif;
+  /* Primary dark text for user‑entered content */
+  color: #1E293B; /* Charcoal / Dark Slate Grey */
   transition: border-color 0.2s;
+}
+
+/* Placeholder / helper text (secondary light) */
+.form-textarea::placeholder,
+.form-select::placeholder {
+  color: #64748B; /* Medium Slate Grey */
 }
 
 .form-textarea:focus, .form-select:focus, .filter-select:focus {
