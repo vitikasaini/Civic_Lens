@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LocationPickerMap from './LocationPickerMap';
 
-export default function CitizenSubmission({ onComplaintCreated }) {
+export default function CitizenSubmission({ onComplaintCreated, authFetch }) {
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -59,7 +59,8 @@ export default function CitizenSubmission({ onComplaintCreated }) {
       formData.append('longitude', longitude.toString());
       formData.append('citizen_severity', citizenSeverity);
 
-      const response = await fetch('/api/complaints', {
+      const fetchFn = authFetch || fetch;
+      const response = await fetchFn('/api/complaints', {
         method: 'POST',
         body: formData,
       });

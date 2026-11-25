@@ -38,11 +38,33 @@ def get_db():
         db.close()
 
 
+def run_migrations(eng):
+    """Run safe, additive ALTER TABLE migrations for new columns."""
+    from sqlalchemy import text, inspect
+    inspector = inspect(eng)
+
+    # Add citizen_id to complaints if missing
+    if "complaints" in inspector.get_table_names():
+        cols = [c["name"] for c in inspector.get_columns("complaints")]
+        with eng.connect() as conn:
+            if "citizen_id" not in cols:
+                conn.execute(text("ALTER TABLE complaints ADD COLUMN citizen_id INTEGER REFERENCES users(id)"))
+            if "address" not in cols:
+                conn.execute(text("ALTER TABLE complaints ADD COLUMN address VARCHAR(500)"))
+            conn.commit()
+
+
 def init_db(target_engine=None):
     """
     Initialize database schema idempotently.
     Creates all tables defined in Base metadata if they don't already exist.
+    Also runs safe ALTER TABLE migrations for newly-added columns.
     """
-    from backend.models.complaint import Complaint, StatusHistory  # ensure models are registered
+    # Import models to register them with Base metadata
+    from backend.models.complaint import Complaint, StatusHistory  # noqa
+    from backend.models.user import User  # noqa
+    from backend.models.notification import Notification  # noqa
+
     eng = target_engine or engine
     Base.metadata.create_all(bind=eng)
+    run_migrations(eng)

@@ -36,6 +36,7 @@ class ComplaintListItem(BaseModel):
     image_path: str
     latitude: float
     longitude: float
+    address: Optional[str] = None
     category: Optional[str] = None
     citizen_severity: str
     severity: Optional[str] = None
@@ -55,6 +56,7 @@ class ComplaintDetail(BaseModel):
     image_path: str
     latitude: float
     longitude: float
+    address: Optional[str] = None
     category: Optional[str] = None
     citizen_severity: str
     severity: Optional[str] = None
@@ -94,3 +96,39 @@ class DashboardSummary(BaseModel):
     pending_complaints: Optional[int] = None
     in_progress_complaints: Optional[int] = None
     resolved_complaints: Optional[int] = None
+
+
+class TokenResponse(BaseModel):
+    """Authentication response returning JWT bearer token."""
+    access_token: str
+    token_type: str = "bearer"
+
+
+class RegisterRequest(BaseModel):
+    """Registration request payload for creating citizen accounts."""
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    """Login credentials request payload."""
+    email: str
+    password: str
+    role: Optional[str] = None
+
+
+class NotificationItem(BaseModel):
+    """Individual citizen notification item."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    complaint_id: Optional[int] = None
+    message: str
+    is_read: bool
+    created_at: datetime
+
+
+class NotificationListResponse(BaseModel):
+    """List of notifications with unread count for the authenticated citizen."""
+    notifications: List[NotificationItem]
+    unread_count: int

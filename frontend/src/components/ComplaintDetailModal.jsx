@@ -1,23 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { useAuth } from '../context/AuthContext';
+import { formatLocationAddress } from '../utils/location';
 
-export default function ComplaintDetailModal({ complaintId, onClose, onStatusUpdated }) {
+export default function ComplaintDetailModal({ complaintId, initialShowMap = false, onClose, onStatusUpdated }) {
+  const { authFetch } = useAuth();
   const [complaint, setComplaint] = useState(null);
   const [similarComplaints, setSimilarComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [error, setError] = useState('');
+  const [showMap, setShowMap] = useState(initialShowMap);
+
+  const mapContainerRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+
+  useEffect(() => {
+    if (initialShowMap) {
+      setShowMap(true);
+    }
+  }, [initialShowMap, complaintId]);
+
+  const fetchFn = authFetch || fetch;
 
   const fetchDetail = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/complaints/${complaintId}`);
+      const res = await fetchFn(`/api/complaints/${complaintId}`);
       if (!res.ok) throw new Error('Complaint not found');
       const data = await res.json();
       setComplaint(data);
 
       // Fetch similar complaints if grouped
       if (data.group_id) {
-        const simRes = await fetch(`/api/complaints/${complaintId}/similar`);
+        const simRes = await fetchFn(`/api/complaints/${complaintId}/similar`);
         if (simRes.ok) {
           const simData = await simRes.json();
           setSimilarComplaints(simData);
@@ -36,11 +53,61 @@ export default function ComplaintDetailModal({ complaintId, onClose, onStatusUpd
     if (complaintId) fetchDetail();
   }, [complaintId]);
 
+  const handleOpenMap = () => {
+    setShowMap(true);
+    setTimeout(() => {
+      if (mapContainerRef.current) {
+        mapContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (mapInstanceRef.current && complaint) {
+        mapInstanceRef.current.setView([complaint.latitude, complaint.longitude], 16);
+        mapInstanceRef.current.invalidateSize();
+      }
+    }, 150);
+  };
+
+  // Handle map rendering when showMap is toggled
+  useEffect(() => {
+    if (!showMap || !complaint || !mapContainerRef.current) return;
+
+    const displayAddr = formatLocationAddress(complaint.address, complaint.latitude, complaint.longitude);
+
+    if (!mapInstanceRef.current) {
+      const map = L.map(mapContainerRef.current).setView(
+        [complaint.latitude, complaint.longitude],
+        16
+      );
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(map);
+
+      const marker = L.marker([complaint.latitude, complaint.longitude]).addTo(map);
+      marker.bindPopup(`
+        <strong>#${complaint.id}</strong><br/>
+        📍 ${displayAddr}<br/>
+        <em>(${complaint.latitude.toFixed(5)}, ${complaint.longitude.toFixed(5)})</em>
+      `).openPopup();
+
+      mapInstanceRef.current = map;
+    } else {
+      mapInstanceRef.current.setView([complaint.latitude, complaint.longitude], 16);
+      mapInstanceRef.current.invalidateSize();
+    }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
+  }, [showMap, complaint]);
+
   const handleStatusChange = async (targetStatus) => {
     setUpdatingStatus(true);
     setError('');
     try {
-      const res = await fetch(`/api/complaints/${complaintId}/status`, {
+      const res = await fetchFn(`/api/complaints/${complaintId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ new_status: targetStatus }),
@@ -100,7 +167,15 @@ export default function ComplaintDetailModal({ complaintId, onClose, onStatusUpd
                     onError={(e) => { e.target.src = 'https://placehold.co/400x300?text=No+Image'; }}
                   />
                   <div className="image-meta">
-                    <span>GPS: {complaint.latitude.toFixed(5)}, {complaint.longitude.toFixed(5)}</span>
+                    <button
+                      type="button"
+                      className="btn-link-coord"
+                      onClick={handleOpenMap}
+                      title="Click to view exact location on map"
+                      style={{ background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer', padding: 0, fontWeight: 500, fontSize: 'inherit', textDecoration: 'underline' }}
+                    >
+                      📍 {complaint.latitude.toFixed(5)}, {complaint.longitude.toFixed(5)}
+                    </button>
                     <span>Reported: {new Date(complaint.created_at).toLocaleString()}</span>
                   </div>
                 </div>
@@ -110,6 +185,49 @@ export default function ComplaintDetailModal({ complaintId, onClose, onStatusUpd
                   <div className="info-row">
                     <span className="label">Category:</span>
                     <span className="value"><strong>{complaint.category || 'Unassigned'}</strong></span>
+                  </div>
+                  <div className="info-row">
+                    <span className="label">Location Address:</span>
+                    <span className="value">
+                      <strong>{formatLocationAddress(complaint.address, complaint.latitude, complaint.longitude)}</strong>
+                    </span>
+                  </div>
+                  <div className="info-row">
+                    <span className="label">Coordinates:</span>
+                    <span className="value">
+                      <button
+                        type="button"
+                        onClick={handleOpenMap}
+                        title="Click to open exact location in the map"
+                        style={{
+                          background: '#eff6ff',
+                          border: '1px solid #bfdbfe',
+                          color: '#1d4ed8',
+                          cursor: 'pointer',
+                          padding: '3px 8px',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                        }}
+                      >
+                        📍 {complaint.latitude.toFixed(5)}, {complaint.longitude.toFixed(5)}
+                        <span style={{ textDecoration: 'underline', fontWeight: 400, marginLeft: '3px' }}>(View on Map)</span>
+                      </button>
+                    </span>
+                  </div>
+                  <div className="info-row" style={{ marginTop: '6px' }}>
+                    <button
+                      className="btn btn-xs btn-outline"
+                      onClick={() => {
+                        if (!showMap) handleOpenMap();
+                        else setShowMap(false);
+                      }}
+                    >
+                      {showMap ? 'Hide Map 🗺️' : 'Open in Map 🗺️'}
+                    </button>
                   </div>
                   <div className="info-row">
                     <span className="label">Citizen Severity:</span>
@@ -165,6 +283,17 @@ export default function ComplaintDetailModal({ complaintId, onClose, onStatusUpd
                   </div>
                 </div>
               </div>
+
+              {/* Map Section when Open in Map is clicked */}
+              {showMap && (
+                <div className="section-box" style={{ marginTop: '16px' }}>
+                  <h4>📍 Map Location</h4>
+                  <div
+                    ref={mapContainerRef}
+                    style={{ height: '240px', width: '100%', borderRadius: '6px' }}
+                  />
+                </div>
+              )}
 
               {/* Description */}
               <div className="section-box">

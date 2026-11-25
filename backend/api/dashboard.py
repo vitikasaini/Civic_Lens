@@ -1,5 +1,6 @@
 """
 Dashboard summary API for authority overview metrics.
+Protected by authority role authorization.
 """
 
 from fastapi import APIRouter, Depends
@@ -9,6 +10,8 @@ from sqlalchemy import func, or_
 from backend.models.database import get_db
 from backend.models.complaint import Complaint
 from backend.models.schemas import DashboardSummary
+from backend.models.user import User
+from backend.api.dependencies import require_authority
 
 router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
 
@@ -18,10 +21,14 @@ router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
     response_model=DashboardSummary,
     summary="Get overview counts for authority dashboard",
 )
-def get_dashboard_summary(db: Session = Depends(get_db)):
+def get_dashboard_summary(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_authority),
+):
     """
     Returns counts for total complaints, high-priority issues,
     and current status counts (pending/reported, in-progress, resolved).
+    Accessible to authorities only.
     """
     total = db.query(func.count(Complaint.id)).scalar() or 0
 

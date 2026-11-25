@@ -37,15 +37,22 @@ class Complaint(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
+    # Ownership – nullable so old complaints are unaffected
+    citizen_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    citizen = relationship("User", back_populates="complaints")
+
+    # Reverse-geocoded human-readable address (cached, nullable)
+    address = Column(String(500), nullable=True)
+
     # ML & Resolution Fields (nullable initially, populated during processing)
-    category = Column(String(100), nullable=True)  # Potholes, Garbage, Waterlogging, Streetlight
-    citizen_severity = Column(String(20), nullable=False)  # Minor, Moderate, Severe
-    severity = Column(String(20), nullable=True)  # Low, Medium, High (computed)
+    category = Column(String(100), nullable=True)
+    citizen_severity = Column(String(20), nullable=False)
+    severity = Column(String(20), nullable=True)
     severity_points = Column(Integer, nullable=True)
 
     # Explainable Priority Fields
     priority_score = Column(Float, nullable=True)
-    priority_factors = Column(JSON, nullable=True)  # Contributing factor breakdown
+    priority_factors = Column(JSON, nullable=True)
 
     # Grouping / Duplicate Info
     group_id = Column(Integer, nullable=True, index=True)

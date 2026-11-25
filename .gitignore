@@ -15,6 +15,9 @@ env/
 .env
 .venv/
 
+# Tool metadata
+.freebuff/
+
 # IDE
 .vscode/
 .idea/
@@ -36,13 +39,11 @@ data/images/**/*.bmp
 *.h5
 *.hdf5
 *.pkl
-*.joblib
 *.pt
 *.pth
 *.onnx
 backend/ml/models/*.h5
 backend/ml/models/*.pkl
-backend/ml/models/*.joblib
 backend/ml/models/*.pt
 
 # Uploaded complaint images

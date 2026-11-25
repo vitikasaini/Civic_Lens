@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { formatLocationAddress } from '../utils/location';
 
 // Custom colored SVG icons for priority levels
 function createPriorityIcon(color) {
@@ -60,6 +61,17 @@ export default function DashboardMap({ complaints, onSelectComplaint }) {
     };
   }, []);
 
+  useEffect(() => {
+    window.__civicLensFocusLocation = (lat, lon) => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.setView([lat, lon], 17);
+      }
+    };
+    return () => {
+      delete window.__civicLensFocusLocation;
+    };
+  }, []);
+
   // Sync markers whenever complaints list changes
   useEffect(() => {
     if (!mapInstanceRef.current || !markersLayerRef.current) return;
@@ -79,10 +91,17 @@ export default function DashboardMap({ complaints, onSelectComplaint }) {
       else if (priority >= 0.35) icon = ICONS.medium;
 
       const marker = L.marker([c.latitude, c.longitude], { icon });
+      const displayAddr = formatLocationAddress(c.address, c.latitude, c.longitude);
 
       const popupContent = `
-        <div style="min-width: 160px; font-family: sans-serif; font-size: 13px;">
+        <div style="min-width: 190px; font-family: sans-serif; font-size: 13px;">
           <div style="font-weight: bold; margin-bottom: 4px;">#${c.id} · ${c.category || 'Unclassified'}</div>
+          <div style="margin-bottom: 4px; color: #374151; font-size: 12px;"><strong>📍 Location:</strong> ${displayAddr}</div>
+          <div style="margin-bottom: 6px;">
+            <button onclick="window.__civicLensFocusLocation(${c.latitude}, ${c.longitude})" title="Click to zoom in on exact location" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:4px; padding:2px 6px; font-size:11px; cursor:pointer; font-weight:600;">
+              📍 (${c.latitude.toFixed(5)}, ${c.longitude.toFixed(5)}) · Zoom
+            </button>
+          </div>
           <div>Severity: <strong>${c.severity || c.citizen_severity}</strong></div>
           <div>Priority: <strong style="color: ${priority >= 0.6 ? '#dc2626' : '#2563eb'}">${(priority * 100).toFixed(1)}%</strong></div>
           <div style="margin-top: 4px;">Status: <span>${c.status}</span></div>
@@ -90,9 +109,6 @@ export default function DashboardMap({ complaints, onSelectComplaint }) {
       `;
 
       marker.bindPopup(popupContent);
-      marker.on('popupopen', () => {
-        // Can trigger select on click
-      });
       marker.on('click', () => {
         if (onSelectComplaint) onSelectComplaint(c.id);
       });
@@ -104,7 +120,7 @@ export default function DashboardMap({ complaints, onSelectComplaint }) {
     if (complaints.length > 0 && bounds.isValid()) {
       mapInstanceRef.current.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
     }
-  }, [complaints]);
+  }, [complaints, onSelectComplaint]);
 
   return (
     <div className="dashboard-map-container">

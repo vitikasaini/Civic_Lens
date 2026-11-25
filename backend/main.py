@@ -1,26 +1,35 @@
 """
 CivicLens V1.0 — Backend Entry Point
-
-FastAPI application for civic issue management and decision-support.
-Provides APIs for complaint submission, processing, and authority dashboard.
 """
 
+import os
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from backend.models.database import init_db, BASE_DIR
+from backend.api.auth import router as auth_router, seed_authority
 from backend.api.complaints import router as complaints_router, UPLOAD_DIR
 from backend.api.dashboard import router as dashboard_router
+from backend.api.notifications import router as notifications_router
+from backend.models.database import SessionLocal
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Application lifespan: initialize database schema on startup."""
+    """Application lifespan: initialize database schema and seed authority on startup."""
     init_db()
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    # Seed authority account from env vars if configured
+    db = SessionLocal()
+    try:
+        seed_authority(db)
+    finally:
+        db.close()
     yield
 
 
@@ -48,8 +57,10 @@ if (FRONTEND_DIST / "assets").exists():
     app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="frontend_assets")
 
 # Include API routers
+app.include_router(auth_router)
 app.include_router(complaints_router)
 app.include_router(dashboard_router)
+app.include_router(notifications_router)
 
 
 @app.get("/", tags=["Health"])
@@ -61,7 +72,6 @@ def root():
 @app.get("/app", include_in_schema=False)
 def serve_app():
     """Serves the built React SPA."""
-    from fastapi.responses import FileResponse
     index_file = FRONTEND_DIST / "index.html"
     if index_file.exists():
         return FileResponse(index_file)
@@ -73,12 +83,21 @@ def health_check():
     """Detailed health check."""
     db_file = BASE_DIR / "civiclens.db"
     db_status = "connected" if db_file.exists() else "ready_to_connect"
-
     return {
         "status": "healthy",
         "components": {
             "api": "up",
             "database": db_status,
-            "ml_models": "not_loaded",  # Will be updated in Phase 2/3
         },
     }
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+def serve_spa(full_path: str):
+    """Fallback route serving the SPA index.html for client-side routing."""
+    if full_path.startswith("api") or full_path.startswith("uploads") or full_path.startswith("assets"):
+        raise HTTPException(status_code=404, detail="Not Found")
+    index_file = FRONTEND_DIST / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file)
+    return {"message": "Frontend not built yet. Run 'npm run build' in frontend/"}

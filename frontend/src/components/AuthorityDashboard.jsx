@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DashboardMap from './DashboardMap';
 import ComplaintDetailModal from './ComplaintDetailModal';
+import NotificationBell from './NotificationBell';
+import { useAuth } from '../context/AuthContext';
+import { formatLocationAddress } from '../utils/location';
 
-export default function AuthorityDashboard() {
+export default function AuthorityDashboard({ onLogout }) {
+  const { authFetch, user } = useAuth();
   const [summary, setSummary] = useState({
     total_complaints: 0,
     high_priority_complaints: 0,
@@ -24,10 +28,11 @@ export default function AuthorityDashboard() {
 
   // Selected complaint for modal
   const [selectedComplaintId, setSelectedComplaintId] = useState(null);
+  const [modalInitialShowMap, setModalInitialShowMap] = useState(false);
 
   const fetchSummary = async () => {
     try {
-      const res = await fetch('/api/dashboard/summary');
+      const res = await authFetch('/api/dashboard/summary');
       if (res.ok) {
         const data = await res.json();
         setSummary(data);
@@ -48,7 +53,7 @@ export default function AuthorityDashboard() {
       if (selectedPriority) params.append('priority', selectedPriority);
       if (sortBy) params.append('sort', sortBy);
 
-      const res = await fetch(`/api/complaints?${params.toString()}`);
+      const res = await authFetch(`/api/complaints?${params.toString()}`);
       if (!res.ok) throw new Error('Failed to fetch complaints');
       const data = await res.json();
       setComplaints(data);
@@ -74,7 +79,7 @@ export default function AuthorityDashboard() {
 
   const handleQuickStatusUpdate = async (id, targetStatus) => {
     try {
-      const res = await fetch(`/api/complaints/${id}/status`, {
+      const res = await authFetch(`/api/complaints/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ new_status: targetStatus }),
@@ -89,6 +94,17 @@ export default function AuthorityDashboard() {
 
   return (
     <div className="dashboard-container">
+      {/* Authority top bar */}
+      <div className="citizen-topbar">
+        <div>
+          <span className="topbar-welcome">🏛️ Authority Dashboard</span>
+          {user && <span className="role-badge authority">{user.email}</span>}
+        </div>
+        <div className="topbar-actions">
+          <NotificationBell />
+          {onLogout && <button className="btn btn-outline" onClick={onLogout}>Logout</button>}
+        </div>
+      </div>
       {/* 8.1 Summary KPI Cards */}
       <div className="summary-cards-grid">
         <div className="kpi-card">
@@ -241,6 +257,7 @@ export default function AuthorityDashboard() {
                   <th>ID</th>
                   <th>Category</th>
                   <th>Description</th>
+                  <th>Location</th>
                   <th>Severity</th>
                   <th>Priority Score</th>
                   <th>Similar</th>
@@ -255,11 +272,16 @@ export default function AuthorityDashboard() {
                   const priorityClass =
                     pScore >= 0.6 ? 'priority-high' : pScore >= 0.35 ? 'priority-med' : 'priority-low';
 
+                  const displayAddr = formatLocationAddress(c.address, c.latitude, c.longitude);
+
                   return (
                     <tr
                       key={c.id}
                       className="complaint-row"
-                      onClick={() => setSelectedComplaintId(c.id)}
+                      onClick={() => {
+                        setModalInitialShowMap(false);
+                        setSelectedComplaintId(c.id);
+                      }}
                     >
                       <td><strong>#{c.id}</strong></td>
                       <td>
@@ -267,6 +289,41 @@ export default function AuthorityDashboard() {
                       </td>
                       <td className="desc-cell" title={c.description}>
                         {c.description.length > 55 ? `${c.description.substring(0, 55)}...` : c.description}
+                      </td>
+                      <td className="location-cell" style={{ maxWidth: '200px', fontSize: '12px' }}>
+                        <div style={{ fontWeight: 500, color: '#1f2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={displayAddr}>
+                          {displayAddr}
+                        </div>
+                        <div>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setModalInitialShowMap(true);
+                              setSelectedComplaintId(c.id);
+                              if (window.__civicLensFocusLocation) {
+                                window.__civicLensFocusLocation(c.latitude, c.longitude);
+                              }
+                            }}
+                            title="Click to open exact location in the map"
+                            style={{
+                              background: '#eff6ff',
+                              border: '1px solid #bfdbfe',
+                              borderRadius: '4px',
+                              color: '#1d4ed8',
+                              cursor: 'pointer',
+                              padding: '1px 5px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              marginTop: '3px',
+                            }}
+                          >
+                            📍 ({c.latitude.toFixed(4)}, {c.longitude.toFixed(4)})
+                          </button>
+                        </div>
                       </td>
                       <td>
                         <span className={`badge badge-severity-${(c.severity || c.citizen_severity).toLowerCase()}`}>
@@ -334,7 +391,11 @@ export default function AuthorityDashboard() {
       {selectedComplaintId && (
         <ComplaintDetailModal
           complaintId={selectedComplaintId}
-          onClose={() => setSelectedComplaintId(null)}
+          initialShowMap={modalInitialShowMap}
+          onClose={() => {
+            setSelectedComplaintId(null);
+            setModalInitialShowMap(false);
+          }}
           onStatusUpdated={refreshAll}
         />
       )}
